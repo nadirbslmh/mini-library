@@ -1,0 +1,1 @@
+go run rent/cmd/main.go

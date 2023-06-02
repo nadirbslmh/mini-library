@@ -1,7 +1,7 @@
 package main
 
 import (
-	"minilib/rent/internal/controller/http"
+	"minilib/rent/internal/routes"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -13,10 +13,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
 
-	handler := http.New()
-
-	e.GET("/rents", handler.GetAll)
-	e.POST("/rents", handler.Create)
+	routes.SetupRoutes(e)
 
 	e.Logger.Fatal(e.Start(":8082"))
 }

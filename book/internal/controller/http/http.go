@@ -18,20 +18,20 @@ func New() *Controller {
 	}
 }
 
-func (h *Controller) GetAll(c echo.Context) error {
-	books := h.service.GetAll()
+func (ctrl *Controller) GetAll(c echo.Context) error {
+	books := ctrl.service.GetAll()
 
 	return c.JSON(http.StatusOK, echo.Map{
 		"data": books,
 	})
 }
 
-func (h *Controller) Create(c echo.Context) error {
+func (ctrl *Controller) Create(c echo.Context) error {
 	var bookInput model.Book = model.Book{}
 
 	c.Bind(&bookInput)
 
-	book := h.service.Create(bookInput)
+	book := ctrl.service.Create(bookInput)
 
 	return c.JSON(http.StatusCreated, echo.Map{
 		"data": book,
