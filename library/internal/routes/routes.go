@@ -11,10 +11,16 @@ import (
 	rentgateway "minilib/library/internal/gateway/rent/http"
 	"minilib/library/internal/service/library"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+
+	"minilib/pkg/auth"
 )
 
 func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
+	jwtConfig := auth.NewDefaultConfig()
+	authMiddlewareConfig := jwtConfig.Init()
+
 	bookGateway := bookgateway.New(registry)
 	bookService := library.NewBookService(*bookGateway)
 	bookController := bookcontroller.New(bookService)
@@ -32,10 +38,13 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
 	endpoints.POST("/register", authController.Register)
 	endpoints.POST("/login", authController.Login)
 
-	endpoints.GET("/books", bookController.GetAll)
-	endpoints.GET("/books/:id", bookController.GetByID)
-	endpoints.POST("/books", bookController.Create)
+	protectedEndpoints := e.Group("/api/v1", echojwt.WithConfig(authMiddlewareConfig))
+	protectedEndpoints.Use(auth.VerifyToken)
 
-	endpoints.GET("/rents", rentController.GetAll)
-	endpoints.POST("/rents", rentController.Create)
+	protectedEndpoints.GET("/books", bookController.GetAll)
+	protectedEndpoints.GET("/books/:id", bookController.GetByID)
+	protectedEndpoints.POST("/books", bookController.Create)
+
+	protectedEndpoints.GET("/rents", rentController.GetAll)
+	protectedEndpoints.POST("/rents", rentController.Create)
 }
