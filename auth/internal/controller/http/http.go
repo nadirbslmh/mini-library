@@ -82,7 +82,7 @@ func (ctrl *Controller) Login(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusCreated, responsemodel.Response[string]{
+	return c.JSON(http.StatusOK, responsemodel.Response[string]{
 		Status:  "success",
 		Message: "login success",
 		Data:    token,
