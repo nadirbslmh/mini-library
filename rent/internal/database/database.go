@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
-	"minilib/book/pkg/model"
+	"minilib/rent/pkg/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,7 +14,7 @@ var db *gorm.DB
 var (
 	DB_USERNAME string = "root"
 	DB_PASSWORD string = ""
-	DB_NAME     string = "lib_book"
+	DB_NAME     string = "lib_rent"
 	DB_HOST     string = "localhost"
 	DB_PORT     string = "3306"
 )
@@ -47,7 +47,7 @@ func InitDatabase() (*gorm.DB, error) {
 
 // perform migration
 func migrate() {
-	err := db.AutoMigrate(&model.Book{})
+	err := db.AutoMigrate(&model.Rent{})
 
 	if err != nil {
 		log.Fatalf("failed to perform database migration: %s\n", err)
