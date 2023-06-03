@@ -7,17 +7,17 @@ import (
 	"minilib/pkg/model"
 )
 
-type Service struct {
+type BookService struct {
 	gateway http.Gateway
 }
 
-func New(gateway http.Gateway) *Service {
-	return &Service{
+func New(gateway http.Gateway) *BookService {
+	return &BookService{
 		gateway: gateway,
 	}
 }
 
-func (srv *Service) GetAll(ctx context.Context) (*model.Response, error) {
+func (srv *BookService) GetAllBooks(ctx context.Context) (*model.Response, error) {
 	data, err := srv.gateway.GetAll(ctx)
 
 	if err != nil {
@@ -27,7 +27,7 @@ func (srv *Service) GetAll(ctx context.Context) (*model.Response, error) {
 	return data, nil
 }
 
-func (srv *Service) GetByID(ctx context.Context, id string) (*model.Response, error) {
+func (srv *BookService) GetBookByID(ctx context.Context, id string) (*model.Response, error) {
 	data, err := srv.gateway.GetByID(ctx, id)
 
 	if err != nil {
@@ -37,7 +37,7 @@ func (srv *Service) GetByID(ctx context.Context, id string) (*model.Response, er
 	return data, nil
 }
 
-func (srv *Service) Create(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
+func (srv *BookService) CreateBook(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
 	data, err := srv.gateway.Create(ctx, bookInput)
 
 	if err != nil {

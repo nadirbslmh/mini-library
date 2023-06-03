@@ -9,17 +9,17 @@ import (
 )
 
 type Controller struct {
-	service *library.Service
+	service *library.BookService
 }
 
-func New(service *library.Service) *Controller {
+func New(service *library.BookService) *Controller {
 	return &Controller{
 		service: service,
 	}
 }
 
 func (h *Controller) GetAll(c echo.Context) error {
-	books, err := h.service.GetAll(c.Request().Context())
+	books, err := h.service.GetAllBooks(c.Request().Context())
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get all books")
@@ -31,7 +31,7 @@ func (h *Controller) GetAll(c echo.Context) error {
 func (h *Controller) GetByID(c echo.Context) error {
 	bookId := c.Param("id")
 
-	book, err := h.service.GetByID(c.Request().Context(), bookId)
+	book, err := h.service.GetBookByID(c.Request().Context(), bookId)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get book data")
@@ -45,7 +45,7 @@ func (h *Controller) Create(c echo.Context) error {
 
 	c.Bind(&bookInput)
 
-	book, err := h.service.Create(c.Request().Context(), bookInput)
+	book, err := h.service.CreateBook(c.Request().Context(), bookInput)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to create book")

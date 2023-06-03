@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"minilib/library/internal/controller/http"
+	"minilib/library/internal/controller/book/http"
 	"minilib/pkg/discovery"
 
 	bookgateway "minilib/library/internal/gateway/book/http"
