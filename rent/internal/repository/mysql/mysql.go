@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"minilib/rent/internal/database"
 	"minilib/rent/internal/repository"
 	"minilib/rent/pkg/model"
 
@@ -44,7 +43,7 @@ func (repo *RentRepositoryImpl) Create(rentInput model.RentInput) (model.Rent, e
 		return model.Rent{}, err
 	}
 
-	err := database.DB.Last(&createdRent).Error
+	err := repo.db.Last(&createdRent).Error
 
 	if err != nil {
 		return model.Rent{}, err
