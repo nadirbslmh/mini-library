@@ -1,24 +1,24 @@
 package rent
 
 import (
-	"minilib/rent/internal/repository/memory"
+	"minilib/rent/internal/repository"
 	"minilib/rent/pkg/model"
 )
 
 type Service struct {
-	repo *memory.Repository
+	repo repository.RentRepository
 }
 
-func New() *Service {
+func New(repo repository.RentRepository) *Service {
 	return &Service{
-		repo: &memory.Repository{},
+		repo: repo,
 	}
 }
 
-func (srv *Service) GetAll() []model.Rent {
+func (srv *Service) GetAll() ([]model.Rent, error) {
 	return srv.repo.GetAll()
 }
 
-func (srv *Service) Create(book model.Rent) model.Rent {
-	return srv.repo.Create(book)
+func (srv *Service) Create(rentInput model.RentInput) (model.Rent, error) {
+	return srv.repo.Create(rentInput)
 }
