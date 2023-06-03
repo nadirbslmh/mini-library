@@ -35,7 +35,7 @@ func (repo *RentRepositoryImpl) Create(rentInput model.RentInput) (model.Rent, e
 	var createdRent model.Rent = model.Rent{
 		UserID:    rentInput.UserID,
 		BookID:    rentInput.BookID,
-		BookTitle: "sample title!",
+		BookTitle: rentInput.BookTitle,
 	}
 
 	result := repo.db.Create(&createdRent)

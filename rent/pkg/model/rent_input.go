@@ -5,7 +5,7 @@ import "github.com/go-playground/validator/v10"
 type RentInput struct {
 	UserID    int    `json:"user_id" validate:"required"`
 	BookID    int    `json:"book_id" validate:"required"`
-	BookTitle string `json:"book_title" validate:"required"`
+	BookTitle string `json:"book_title"`
 }
 
 func (input *RentInput) Validate() error {
