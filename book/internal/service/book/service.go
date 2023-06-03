@@ -1,24 +1,27 @@
 package book
 
 import (
-	"minilib/book/internal/repository/memory"
+	"minilib/book/internal/repository"
 	"minilib/book/pkg/model"
 )
 
-type Service struct {
-	repo *memory.Repository
+type BookService struct {
+	repo repository.BookRepository
 }
 
-func New() *Service {
-	return &Service{
-		repo: &memory.Repository{},
+func New(repo repository.BookRepository) *BookService {
+	return &BookService{
+		repo: repo,
 	}
 }
 
-func (srv *Service) GetAll() []model.Book {
+func (srv *BookService) GetAll() ([]model.Book, error) {
 	return srv.repo.GetAll()
 }
 
-func (srv *Service) Create(book model.Book) model.Book {
-	return srv.repo.Create(book)
+func (srv *BookService) GetByID(id string) (model.Book, error) {
+	return srv.repo.GetByID(id)
+}
+func (srv *BookService) Create(bookInput model.BookInput) (model.Book, error) {
+	return srv.repo.Create(bookInput)
 }

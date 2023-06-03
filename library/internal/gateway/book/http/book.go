@@ -9,8 +9,8 @@ import (
 	"log"
 	"math/rand"
 	bookmodel "minilib/book/pkg/model"
-	"minilib/library/pkg/model"
 	"minilib/pkg/discovery"
+	"minilib/pkg/model"
 	"net/http"
 )
 
@@ -32,6 +32,42 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
 	}
 
 	url := "http://" + addrs[rand.Intn(len(addrs))] + "/books"
+
+	log.Printf("calling book service. Request: GET " + url)
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, errors.New("not found")
+	} else if resp.StatusCode/100 != 2 {
+		return nil, fmt.Errorf("non-2xx response: %v", resp)
+	}
+
+	var v *model.Response
+
+	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response, error) {
+	addrs, err := g.registry.ServiceAddresses(ctx, "book")
+
+	if err != nil {
+		return nil, err
+	}
+
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/books/" + id
 
 	log.Printf("calling book service. Request: GET " + url)
 

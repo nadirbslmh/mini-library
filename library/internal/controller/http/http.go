@@ -28,6 +28,18 @@ func (h *Controller) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, books)
 }
 
+func (h *Controller) GetByID(c echo.Context) error {
+	bookId := c.Param("id")
+
+	book, err := h.service.GetByID(c.Request().Context(), bookId)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get book data")
+	}
+
+	return c.JSON(http.StatusOK, book)
+}
+
 func (h *Controller) Create(c echo.Context) error {
 	var bookInput model.Book = model.Book{}
 

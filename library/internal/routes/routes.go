@@ -18,5 +18,6 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
 	endpoints := e.Group("/api/v1")
 
 	endpoints.GET("/books", bookController.GetAll)
+	endpoints.GET("/books/:id", bookController.GetByID)
 	endpoints.POST("/books", bookController.Create)
 }
