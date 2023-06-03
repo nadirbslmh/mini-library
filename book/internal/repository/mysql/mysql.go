@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"minilib/book/internal/database"
 	"minilib/book/internal/repository"
 	"minilib/book/pkg/model"
 
@@ -48,13 +49,13 @@ func (repo *BookRepositoryImpl) Create(bookInput model.BookInput) (model.Book, e
 		Author:      bookInput.Author,
 	}
 
-	result := repo.db.Create(&createdBook)
+	result := database.DB.Create(&createdBook)
 
 	if err := result.Error; err != nil {
 		return model.Book{}, err
 	}
 
-	err := repo.db.Last(&createdBook).Error
+	err := database.DB.Last(&createdBook).Error
 
 	if err != nil {
 		return model.Book{}, err

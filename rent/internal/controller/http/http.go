@@ -1,7 +1,6 @@
 package http
 
 import (
-	responsemodel "minilib/pkg/model"
 	"minilib/rent/internal/service/rent"
 	"minilib/rent/pkg/model"
 	"net/http"
@@ -10,63 +9,31 @@ import (
 )
 
 type Controller struct {
-	service *rent.RentService
+	service *rent.Service
 }
 
-func New(service *rent.RentService) *Controller {
+func New() *Controller {
 	return &Controller{
-		service: rent.New(service),
+		service: rent.New(),
 	}
 }
 
 func (ctrl *Controller) GetAll(c echo.Context) error {
-	rents, err := ctrl.service.GetAll()
+	rents := ctrl.service.GetAll()
 
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responsemodel.Response{
-			Status:  "failed",
-			Message: "failed to fetch book rents",
-		})
-	}
-
-	return c.JSON(http.StatusOK, responsemodel.Response{
-		Status:  "success",
-		Message: "all book rents",
-		Data:    rents,
+	return c.JSON(http.StatusOK, echo.Map{
+		"data": rents,
 	})
 }
 
 func (ctrl *Controller) Create(c echo.Context) error {
-	var rentInput model.RentInput = model.RentInput{}
+	var rentInput model.Rent = model.Rent{}
 
-	if err := c.Bind(&rentInput); err != nil {
-		return c.JSON(http.StatusBadRequest, responsemodel.Response{
-			Status:  "failed",
-			Message: "invalid request",
-		})
-	}
+	c.Bind(&rentInput)
 
-	err := rentInput.Validate()
+	rent := ctrl.service.Create(rentInput)
 
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, responsemodel.Response{
-			Status:  "failed",
-			Message: "invalid request",
-		})
-	}
-
-	rent, err := ctrl.service.Create(rentInput)
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responsemodel.Response{
-			Status:  "failed",
-			Message: "failed to create a book rent data",
-		})
-	}
-
-	return c.JSON(http.StatusCreated, responsemodel.Response{
-		Status:  "success",
-		Message: "rent created",
-		Data:    rent,
+	return c.JSON(http.StatusCreated, echo.Map{
+		"data": rent,
 	})
 }

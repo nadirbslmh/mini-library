@@ -6,7 +6,6 @@ import (
 	"log"
 	"minilib/pkg/discovery"
 	"minilib/pkg/discovery/consul"
-	"minilib/rent/internal/database"
 	"minilib/rent/internal/routes"
 	"time"
 
@@ -23,13 +22,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
 
-	database, err := database.InitDatabase()
-
-	if err != nil {
-		panic(err)
-	}
-
-	routes.SetupRoutes(e, database)
+	routes.SetupRoutes(e)
 
 	// start registry
 	registry, err := consul.NewRegistry("localhost:8500")

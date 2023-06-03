@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
 var (
 	DB_USERNAME string = "root"
@@ -31,7 +31,7 @@ func InitDatabase() (*gorm.DB, error) {
 		DB_NAME,
 	)
 
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalf("error when creating a connection to the database: %s\n", err)
@@ -42,12 +42,12 @@ func InitDatabase() (*gorm.DB, error) {
 
 	migrate()
 
-	return db, nil
+	return DB, nil
 }
 
 // perform migration
 func migrate() {
-	err := db.AutoMigrate(&model.Book{})
+	err := DB.AutoMigrate(&model.Book{})
 
 	if err != nil {
 		log.Fatalf("failed to perform database migration: %s\n", err)
