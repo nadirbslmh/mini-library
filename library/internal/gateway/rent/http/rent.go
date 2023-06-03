@@ -65,8 +65,6 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]rentmodel.Rent]
 }
 
 func (g *Gateway) Create(ctx context.Context, rentInput rentmodel.RentInput) (*model.Response[rentmodel.Rent], error) {
-	fmt.Println("the book id: ", rentInput.BookID)
-
 	responseData, err := g.bookgateway.GetByID(ctx, strconv.Itoa(rentInput.BookID))
 
 	isFailed := err != nil || responseData == nil

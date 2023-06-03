@@ -2,6 +2,7 @@ package http
 
 import (
 	"minilib/library/internal/service/library"
+	"minilib/pkg/auth"
 	"minilib/rent/pkg/model"
 	"net/http"
 
@@ -32,6 +33,14 @@ func (h *Controller) Create(c echo.Context) error {
 	var rentInput model.RentInput
 
 	c.Bind(&rentInput)
+
+	user, err := auth.GetUser(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to create book rent")
+	}
+
+	rentInput.UserID = user.ID
 
 	rent, err := h.service.CreateRent(c.Request().Context(), rentInput)
 
