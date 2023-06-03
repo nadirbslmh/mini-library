@@ -41,7 +41,7 @@ func (h *Controller) GetByID(c echo.Context) error {
 }
 
 func (h *Controller) Create(c echo.Context) error {
-	var bookInput model.Book = model.Book{}
+	var bookInput model.BookInput
 
 	c.Bind(&bookInput)
 

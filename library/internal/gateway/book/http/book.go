@@ -96,7 +96,7 @@ func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response, erro
 	return v, nil
 }
 
-func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.Book) (*model.Response, error) {
+func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "book")
 
 	if err != nil {

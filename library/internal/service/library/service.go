@@ -37,7 +37,7 @@ func (srv *Service) GetByID(ctx context.Context, id string) (*model.Response, er
 	return data, nil
 }
 
-func (srv *Service) Create(ctx context.Context, bookInput bookmodel.Book) (*model.Response, error) {
+func (srv *Service) Create(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
 	data, err := srv.gateway.Create(ctx, bookInput)
 
 	if err != nil {

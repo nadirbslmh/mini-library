@@ -49,7 +49,7 @@ func (repo *BookRepositoryImpl) Create(bookInput model.BookInput) (model.Book, e
 		Author:      bookInput.Author,
 	}
 
-	result := database.DB.Create(&createdBook)
+	result := repo.db.Create(&createdBook)
 
 	if err := result.Error; err != nil {
 		return model.Book{}, err
