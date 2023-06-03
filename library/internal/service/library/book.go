@@ -11,13 +11,13 @@ type BookService struct {
 	gateway http.Gateway
 }
 
-func New(gateway http.Gateway) *BookService {
+func NewBookService(gateway http.Gateway) *BookService {
 	return &BookService{
 		gateway: gateway,
 	}
 }
 
-func (srv *BookService) GetAllBooks(ctx context.Context) (*model.Response, error) {
+func (srv *BookService) GetAllBooks(ctx context.Context) (*model.Response[[]bookmodel.Book], error) {
 	data, err := srv.gateway.GetAll(ctx)
 
 	if err != nil {
@@ -27,7 +27,7 @@ func (srv *BookService) GetAllBooks(ctx context.Context) (*model.Response, error
 	return data, nil
 }
 
-func (srv *BookService) GetBookByID(ctx context.Context, id string) (*model.Response, error) {
+func (srv *BookService) GetBookByID(ctx context.Context, id string) (*model.Response[bookmodel.Book], error) {
 	data, err := srv.gateway.GetByID(ctx, id)
 
 	if err != nil {
@@ -37,7 +37,7 @@ func (srv *BookService) GetBookByID(ctx context.Context, id string) (*model.Resp
 	return data, nil
 }
 
-func (srv *BookService) CreateBook(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
+func (srv *BookService) CreateBook(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response[bookmodel.Book], error) {
 	data, err := srv.gateway.Create(ctx, bookInput)
 
 	if err != nil {

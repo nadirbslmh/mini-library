@@ -24,7 +24,7 @@ func New(registry discovery.Registry) *Gateway {
 	}
 }
 
-func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
+func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]bookmodel.Book], error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "book")
 
 	if err != nil {
@@ -52,7 +52,7 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
 		return nil, fmt.Errorf("non-2xx response: %v", resp)
 	}
 
-	var v *model.Response
+	var v *model.Response[[]bookmodel.Book]
 
 	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
 	return v, nil
 }
 
-func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response, error) {
+func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response[bookmodel.Book], error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "book")
 
 	if err != nil {
@@ -88,7 +88,7 @@ func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response, erro
 		return nil, fmt.Errorf("non-2xx response: %v", resp)
 	}
 
-	var v *model.Response
+	var v *model.Response[bookmodel.Book]
 
 	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response, erro
 	return v, nil
 }
 
-func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response, error) {
+func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*model.Response[bookmodel.Book], error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "book")
 
 	if err != nil {
@@ -134,7 +134,7 @@ func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*m
 		return nil, fmt.Errorf("non-2xx response: %v", resp)
 	}
 
-	var v *model.Response
+	var v *model.Response[bookmodel.Book]
 
 	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
 		return nil, err

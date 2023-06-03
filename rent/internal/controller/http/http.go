@@ -23,13 +23,13 @@ func (ctrl *Controller) GetAll(c echo.Context) error {
 	rents, err := ctrl.service.GetAll()
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responsemodel.Response{
+		return c.JSON(http.StatusInternalServerError, responsemodel.Response[any]{
 			Status:  "failed",
 			Message: "failed to fetch book rents data",
 		})
 	}
 
-	return c.JSON(http.StatusOK, responsemodel.Response{
+	return c.JSON(http.StatusOK, responsemodel.Response[[]model.Rent]{
 		Status:  "success",
 		Message: "all book rents data",
 		Data:    rents,
@@ -40,7 +40,7 @@ func (ctrl *Controller) Create(c echo.Context) error {
 	var rentInput model.RentInput
 
 	if err := c.Bind(&rentInput); err != nil {
-		return c.JSON(http.StatusBadRequest, responsemodel.Response{
+		return c.JSON(http.StatusBadRequest, responsemodel.Response[any]{
 			Status:  "failed",
 			Message: "invalid request",
 		})
@@ -49,7 +49,7 @@ func (ctrl *Controller) Create(c echo.Context) error {
 	err := rentInput.Validate()
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, responsemodel.Response{
+		return c.JSON(http.StatusBadRequest, responsemodel.Response[any]{
 			Status:  "failed",
 			Message: "invalid request",
 		})
@@ -58,13 +58,13 @@ func (ctrl *Controller) Create(c echo.Context) error {
 	rent, err := ctrl.service.Create(rentInput)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responsemodel.Response{
+		return c.JSON(http.StatusInternalServerError, responsemodel.Response[any]{
 			Status:  "failed",
 			Message: "failed to create a book rent",
 		})
 	}
 
-	return c.JSON(http.StatusCreated, responsemodel.Response{
+	return c.JSON(http.StatusCreated, responsemodel.Response[model.Rent]{
 		Status:  "success",
 		Message: "book rent created",
 		Data:    rent,
