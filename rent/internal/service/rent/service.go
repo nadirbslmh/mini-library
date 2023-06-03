@@ -15,8 +15,8 @@ func New(repo repository.RentRepository) *Service {
 	}
 }
 
-func (srv *Service) GetAll() ([]model.Rent, error) {
-	return srv.repo.GetAll()
+func (srv *Service) GetAll(userId string) ([]model.Rent, error) {
+	return srv.repo.GetAll(userId)
 }
 
 func (srv *Service) Create(rentInput model.RentInput) (model.Rent, error) {

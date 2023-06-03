@@ -28,14 +28,14 @@ func New(registry discovery.Registry, bookgateway *bookgateway.Gateway) *Gateway
 	}
 }
 
-func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]rentmodel.Rent], error) {
+func (g *Gateway) GetAll(ctx context.Context, userId string) (*model.Response[[]rentmodel.Rent], error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "rent")
 
 	if err != nil {
 		return nil, err
 	}
 
-	url := "http://" + addrs[rand.Intn(len(addrs))] + "/rents"
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/rents/" + userId
 
 	log.Printf("calling rent service. Request: GET " + url)
 

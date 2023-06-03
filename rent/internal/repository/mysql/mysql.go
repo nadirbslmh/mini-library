@@ -17,17 +17,17 @@ func New(db *gorm.DB) repository.RentRepository {
 	}
 }
 
-func (repo *RentRepositoryImpl) GetAll() ([]model.Rent, error) {
+func (repo *RentRepositoryImpl) GetAll(userId string) ([]model.Rent, error) {
 	//TODO: get from logged in user
-	var s []model.Rent
+	var rents []model.Rent
 
-	err := repo.db.Find(&s).Error
+	err := repo.db.Where("user_id = ?", userId).Find(&rents).Error
 
 	if err != nil {
 		return nil, err
 	}
 
-	return s, nil
+	return rents, nil
 }
 
 func (repo *RentRepositoryImpl) Create(rentInput model.RentInput) (model.Rent, error) {

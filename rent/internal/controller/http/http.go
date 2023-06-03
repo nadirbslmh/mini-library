@@ -20,7 +20,9 @@ func New(service *rent.Service) *Controller {
 }
 
 func (ctrl *Controller) GetAll(c echo.Context) error {
-	rents, err := ctrl.service.GetAll()
+	userId := c.Param("id")
+
+	rents, err := ctrl.service.GetAll(userId)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responsemodel.Response[any]{

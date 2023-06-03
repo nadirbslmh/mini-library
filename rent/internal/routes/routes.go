@@ -14,6 +14,6 @@ func SetupRoutes(e *echo.Echo, db *gorm.DB) {
 	service := rent.New(repository)
 	controller := http.New(service)
 
-	e.GET("/rents", controller.GetAll)
+	e.GET("/rents/:id", controller.GetAll)
 	e.POST("/rents", controller.Create)
 }

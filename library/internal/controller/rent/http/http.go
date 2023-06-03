@@ -5,6 +5,7 @@ import (
 	"minilib/pkg/auth"
 	"minilib/rent/pkg/model"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,7 +21,15 @@ func New(service *library.RentService) *Controller {
 }
 
 func (h *Controller) GetAll(c echo.Context) error {
-	rents, err := h.service.GetAllRents(c.Request().Context())
+	user, err := auth.GetUser(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get all book rents data")
+	}
+
+	userId := strconv.Itoa(user.ID)
+
+	rents, err := h.service.GetAllRents(c.Request().Context(), userId)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get all book rents data")
