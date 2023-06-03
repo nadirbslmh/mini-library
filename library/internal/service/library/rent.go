@@ -17,8 +17,8 @@ func NewRentService(gateway http.Gateway) *RentService {
 	}
 }
 
-func (srv *RentService) GetAllRents(ctx context.Context, userId string) (*model.Response[[]rentmodel.Rent], error) {
-	return srv.gateway.GetAll(ctx, userId)
+func (srv *RentService) GetAllRents(ctx context.Context) (*model.Response[[]rentmodel.Rent], error) {
+	return srv.gateway.GetAll(ctx)
 }
 
 func (srv *RentService) CreateRent(ctx context.Context, bookInput rentmodel.RentInput) (*model.Response[rentmodel.Rent], error) {

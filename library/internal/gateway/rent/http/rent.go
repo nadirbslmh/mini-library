@@ -9,6 +9,7 @@ import (
 	"log"
 	"math/rand"
 	bookgateway "minilib/library/internal/gateway/book/http"
+	"minilib/library/pkg/constant"
 	"minilib/pkg/discovery"
 	"minilib/pkg/model"
 	rentmodel "minilib/rent/pkg/model"
@@ -28,14 +29,22 @@ func New(registry discovery.Registry, bookgateway *bookgateway.Gateway) *Gateway
 	}
 }
 
-func (g *Gateway) GetAll(ctx context.Context, userId string) (*model.Response[[]rentmodel.Rent], error) {
+func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]rentmodel.Rent], error) {
 	addrs, err := g.registry.ServiceAddresses(ctx, "rent")
 
 	if err != nil {
 		return nil, err
 	}
 
-	url := "http://" + addrs[rand.Intn(len(addrs))] + "/rents/" + userId
+	userCtx := ctx.Value(constant.USER_ID_KEY)
+
+	userID, ok := userCtx.(string)
+
+	if !ok {
+		return nil, errors.New("id is invalid")
+	}
+
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/rents/" + userID
 
 	log.Printf("calling rent service. Request: GET " + url)
 

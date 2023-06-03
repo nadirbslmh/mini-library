@@ -1,7 +1,10 @@
 package http
 
 import (
+	"context"
+	"fmt"
 	"minilib/library/internal/service/library"
+	"minilib/library/pkg/constant"
 	"minilib/pkg/auth"
 	"minilib/rent/pkg/model"
 	"net/http"
@@ -29,7 +32,13 @@ func (h *Controller) GetAll(c echo.Context) error {
 
 	userId := strconv.Itoa(user.ID)
 
-	rents, err := h.service.GetAllRents(c.Request().Context(), userId)
+	ctxKey := constant.USER_ID_KEY
+
+	ctx := context.WithValue(c.Request().Context(), ctxKey, userId)
+
+	fmt.Println("new context: ", ctx.Value(ctxKey))
+
+	rents, err := h.service.GetAllRents(ctx)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to get all book rents data")
