@@ -7,15 +7,31 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/rand"
 	bookmodel "minilib/book/pkg/model"
 	"minilib/library/pkg/model"
+	"minilib/pkg/discovery"
 	"net/http"
 )
 
-type Gateway struct{}
+type Gateway struct {
+	registry discovery.Registry
+}
+
+func New(registry discovery.Registry) *Gateway {
+	return &Gateway{
+		registry: registry,
+	}
+}
 
 func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
-	url := "http://localhost:8081/books"
+	addrs, err := g.registry.ServiceAddresses(ctx, "book")
+
+	if err != nil {
+		return nil, err
+	}
+
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/books"
 
 	log.Printf("calling book service. Request: GET " + url)
 
@@ -45,7 +61,13 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response, error) {
 }
 
 func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.Book) (*model.Response, error) {
-	url := "http://localhost:8081/books"
+	addrs, err := g.registry.ServiceAddresses(ctx, "book")
+
+	if err != nil {
+		return nil, err
+	}
+
+	url := "http://" + addrs[rand.Intn(len(addrs))] + "/books"
 
 	log.Printf("calling book service. Request: POST " + url)
 

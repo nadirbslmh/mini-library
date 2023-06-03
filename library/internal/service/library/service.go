@@ -11,9 +11,9 @@ type Service struct {
 	gateway http.Gateway
 }
 
-func New() *Service {
+func New(gateway http.Gateway) *Service {
 	return &Service{
-		gateway: http.Gateway{},
+		gateway: gateway,
 	}
 }
 

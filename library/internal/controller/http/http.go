@@ -12,9 +12,9 @@ type Controller struct {
 	service *library.Service
 }
 
-func New() *Controller {
+func New(service *library.Service) *Controller {
 	return &Controller{
-		service: library.New(),
+		service: service,
 	}
 }
 

@@ -2,15 +2,21 @@ package routes
 
 import (
 	"minilib/library/internal/controller/http"
+	"minilib/pkg/discovery"
+
+	bookgateway "minilib/library/internal/gateway/book/http"
+	"minilib/library/internal/service/library"
 
 	"github.com/labstack/echo/v4"
 )
 
-func SetupRoutes(e *echo.Echo) {
-	handler := http.New()
+func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
+	bookGateway := bookgateway.New(registry)
+	bookService := library.New(*bookGateway)
+	bookController := http.New(bookService)
 
-	book := e.Group("/api/v1")
+	endpoints := e.Group("/api/v1")
 
-	book.GET("/books", handler.GetAll)
-	book.POST("/books", handler.Create)
+	endpoints.GET("/books", bookController.GetAll)
+	endpoints.POST("/books", bookController.Create)
 }
