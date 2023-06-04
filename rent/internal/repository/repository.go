@@ -1,6 +1,6 @@
 package repository
 
-import "minilib/rent/pkg/model"
+import "rent-service/pkg/model"
 
 type RentRepository interface {
 	GetAll(userId string) ([]model.Rent, error)

@@ -12,8 +12,8 @@ import (
 	"minilib/library/pkg/constant"
 	"minilib/pkg/discovery"
 	"minilib/pkg/model"
-	rentmodel "minilib/rent/pkg/model"
 	"net/http"
+	rentmodel "rent-service/pkg/model"
 	"strconv"
 )
 

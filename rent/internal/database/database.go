@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
-	"minilib/rent/pkg/model"
+	"rent-service/pkg/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

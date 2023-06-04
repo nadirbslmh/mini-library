@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"minilib/rent/internal/controller/http"
-	"minilib/rent/internal/repository/mysql"
-	"minilib/rent/internal/service/rent"
+	"rent-service/internal/controller/http"
+	"rent-service/internal/repository/mysql"
+	"rent-service/internal/service/rent"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

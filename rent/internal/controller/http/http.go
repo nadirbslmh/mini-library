@@ -1,10 +1,10 @@
 package http
 
 import (
-	responsemodel "minilib/pkg/model"
-	"minilib/rent/internal/service/rent"
-	"minilib/rent/pkg/model"
 	"net/http"
+	responsemodel "pkg-service/model"
+	"rent-service/internal/service/rent"
+	"rent-service/pkg/model"
 
 	"github.com/labstack/echo/v4"
 )

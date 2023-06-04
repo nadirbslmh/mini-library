@@ -4,7 +4,7 @@ import (
 	"context"
 	"minilib/library/internal/gateway/rent/http"
 	"minilib/pkg/model"
-	rentmodel "minilib/rent/pkg/model"
+	rentmodel "rent-service/pkg/model"
 )
 
 type RentService struct {

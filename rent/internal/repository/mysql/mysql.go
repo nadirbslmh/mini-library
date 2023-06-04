@@ -1,8 +1,8 @@
 package mysql
 
 import (
-	"minilib/rent/internal/repository"
-	"minilib/rent/pkg/model"
+	"rent-service/internal/repository"
+	"rent-service/pkg/model"
 
 	"gorm.io/gorm"
 )

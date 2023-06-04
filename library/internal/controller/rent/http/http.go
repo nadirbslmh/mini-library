@@ -6,8 +6,8 @@ import (
 	"minilib/library/internal/service/library"
 	"minilib/library/pkg/constant"
 	"minilib/pkg/auth"
-	"minilib/rent/pkg/model"
 	"net/http"
+	"rent-service/pkg/model"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
