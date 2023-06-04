@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"minilib/book/internal/controller/http"
-	"minilib/book/internal/repository/mysql"
-	"minilib/book/internal/service/book"
+	"book-service/internal/controller/http"
+	"book-service/internal/repository/mysql"
+	"book-service/internal/service/book"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

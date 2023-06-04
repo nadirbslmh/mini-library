@@ -1,6 +1,6 @@
 package repository
 
-import "minilib/book/pkg/model"
+import "book-service/pkg/model"
 
 type BookRepository interface {
 	GetAll() ([]model.Book, error)

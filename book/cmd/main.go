@@ -1,13 +1,13 @@
 package main
 
 import (
+	"book-service/internal/database"
+	"book-service/internal/routes"
 	"context"
 	"fmt"
 	"log"
-	"minilib/book/internal/database"
-	"minilib/book/internal/routes"
-	"minilib/pkg/discovery"
-	"minilib/pkg/discovery/consul"
+	"pkg-service/discovery"
+	"pkg-service/discovery/consul"
 	"time"
 
 	"github.com/labstack/echo/v4"

@@ -1,10 +1,10 @@
 package http
 
 import (
-	"minilib/book/internal/service/book"
-	"minilib/book/pkg/model"
-	responsemodel "minilib/pkg/model"
+	"book-service/internal/service/book"
+	"book-service/pkg/model"
 	"net/http"
+	responsemodel "pkg-service/model"
 
 	"github.com/labstack/echo/v4"
 )

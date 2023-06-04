@@ -1,8 +1,8 @@
 package mysql
 
 import (
-	"minilib/book/internal/repository"
-	"minilib/book/pkg/model"
+	"book-service/internal/repository"
+	"book-service/pkg/model"
 
 	"gorm.io/gorm"
 )

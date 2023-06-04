@@ -1,9 +1,9 @@
 package database
 
 import (
+	"book-service/pkg/model"
 	"fmt"
 	"log"
-	"minilib/book/pkg/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
