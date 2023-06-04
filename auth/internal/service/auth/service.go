@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"minilib/auth/internal/repository"
-	"minilib/auth/pkg/model"
+	"auth-service/internal/repository"
+	"auth-service/pkg/model"
 )
 
 type AuthService struct {

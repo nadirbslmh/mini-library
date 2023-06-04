@@ -1,6 +1,6 @@
 package repository
 
-import "minilib/auth/pkg/model"
+import "auth-service/pkg/model"
 
 type AuthRepository interface {
 	Register(userInput model.UserInput) (model.User, error)

@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"minilib/auth/internal/controller/http"
-	"minilib/auth/internal/repository/mysql"
-	"minilib/auth/internal/service/auth"
+	"auth-service/internal/controller/http"
+	"auth-service/internal/repository/mysql"
+	"auth-service/internal/service/auth"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

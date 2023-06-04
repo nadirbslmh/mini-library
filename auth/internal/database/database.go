@@ -1,9 +1,9 @@
 package database
 
 import (
+	"auth-service/pkg/model"
 	"fmt"
 	"log"
-	"minilib/auth/pkg/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

@@ -1,10 +1,10 @@
 package http
 
 import (
-	"minilib/auth/internal/service/auth"
-	"minilib/auth/pkg/model"
-	responsemodel "minilib/pkg/model"
+	"auth-service/internal/service/auth"
+	"auth-service/pkg/model"
 	"net/http"
+	responsemodel "pkg-service/model"
 
 	"github.com/labstack/echo/v4"
 )

@@ -1,13 +1,15 @@
 package main
 
 import (
+	"auth-service/internal/database"
+	"auth-service/internal/routes"
 	"context"
 	"fmt"
 	"log"
-	"minilib/auth/internal/database"
-	"minilib/auth/internal/routes"
-	"minilib/pkg/discovery"
-	"minilib/pkg/discovery/consul"
+
+	"pkg-service/discovery"
+	"pkg-service/discovery/consul"
+
 	"time"
 
 	"github.com/labstack/echo/v4"

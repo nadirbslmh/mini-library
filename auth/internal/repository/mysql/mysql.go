@@ -1,9 +1,9 @@
 package mysql
 
 import (
-	"minilib/auth/internal/repository"
-	"minilib/auth/pkg/model"
-	"minilib/pkg/auth"
+	"auth-service/internal/repository"
+	"auth-service/pkg/model"
+	"pkg-service/auth"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
