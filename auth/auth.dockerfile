@@ -1,12 +1,11 @@
-FROM golang:alpine
+FROM alpine:latest
 
 WORKDIR /app
 
-COPY . .
+COPY authApp /app
 
-RUN go mod download
-RUN go build -o dist
+RUN apk add libc6-compat
 
 EXPOSE 8083
 
-ENTRYPOINT [ "./dist" ]
+ENTRYPOINT ["./authApp"]
