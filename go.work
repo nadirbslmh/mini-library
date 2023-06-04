@@ -7,3 +7,5 @@ use ./pkg
 use ./book
 
 use ./rent
+
+use ./library

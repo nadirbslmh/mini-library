@@ -1,10 +1,10 @@
 package library
 
 import (
+	bookmodel "book-service/pkg/model"
 	"context"
-	bookmodel "minilib/book/pkg/model"
-	"minilib/library/internal/gateway/book/http"
-	"minilib/pkg/model"
+	"library-service/internal/gateway/book/http"
+	"pkg-service/model"
 )
 
 type BookService struct {

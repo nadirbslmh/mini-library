@@ -1,10 +1,10 @@
 package library
 
 import (
+	authmodel "auth-service/pkg/model"
 	"context"
-	authmodel "minilib/auth/pkg/model"
-	"minilib/library/internal/gateway/auth/http"
-	"minilib/pkg/model"
+	"library-service/internal/gateway/auth/http"
+	"pkg-service/model"
 )
 
 type AuthService struct {

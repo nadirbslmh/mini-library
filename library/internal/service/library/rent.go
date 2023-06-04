@@ -2,8 +2,8 @@ package library
 
 import (
 	"context"
-	"minilib/library/internal/gateway/rent/http"
-	"minilib/pkg/model"
+	"library-service/internal/gateway/rent/http"
+	"pkg-service/model"
 	rentmodel "rent-service/pkg/model"
 )
 

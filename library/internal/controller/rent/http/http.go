@@ -3,10 +3,10 @@ package http
 import (
 	"context"
 	"fmt"
-	"minilib/library/internal/service/library"
-	"minilib/library/pkg/constant"
-	"minilib/pkg/auth"
+	"library-service/internal/service/library"
+	"library-service/pkg/constant"
 	"net/http"
+	"pkg-service/auth"
 	"rent-service/pkg/model"
 	"strconv"
 

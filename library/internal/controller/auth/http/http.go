@@ -1,8 +1,8 @@
 package http
 
 import (
-	"minilib/auth/pkg/model"
-	"minilib/library/internal/service/library"
+	"auth-service/pkg/model"
+	"library-service/internal/service/library"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

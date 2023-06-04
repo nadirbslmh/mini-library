@@ -1,6 +1,7 @@
 package http
 
 import (
+	bookmodel "book-service/pkg/model"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -8,10 +9,9 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	bookmodel "minilib/book/pkg/model"
-	"minilib/pkg/discovery"
-	"minilib/pkg/model"
 	"net/http"
+	"pkg-service/discovery"
+	"pkg-service/model"
 )
 
 type Gateway struct {

@@ -1,8 +1,8 @@
 package http
 
 import (
-	"minilib/book/pkg/model"
-	"minilib/library/internal/service/library"
+	"book-service/pkg/model"
+	"library-service/internal/service/library"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

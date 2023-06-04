@@ -1,20 +1,20 @@
 package routes
 
 import (
-	authcontroller "minilib/library/internal/controller/auth/http"
-	bookcontroller "minilib/library/internal/controller/book/http"
-	rentcontroller "minilib/library/internal/controller/rent/http"
-	"minilib/pkg/discovery"
+	authcontroller "library-service/internal/controller/auth/http"
+	bookcontroller "library-service/internal/controller/book/http"
+	rentcontroller "library-service/internal/controller/rent/http"
+	"pkg-service/discovery"
 
-	authgateway "minilib/library/internal/gateway/auth/http"
-	bookgateway "minilib/library/internal/gateway/book/http"
-	rentgateway "minilib/library/internal/gateway/rent/http"
-	"minilib/library/internal/service/library"
+	authgateway "library-service/internal/gateway/auth/http"
+	bookgateway "library-service/internal/gateway/book/http"
+	rentgateway "library-service/internal/gateway/rent/http"
+	"library-service/internal/service/library"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 
-	"minilib/pkg/auth"
+	"pkg-service/auth"
 )
 
 func SetupRoutes(e *echo.Echo, registry discovery.Registry) {

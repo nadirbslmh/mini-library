@@ -1,6 +1,7 @@
 package http
 
 import (
+	authmodel "auth-service/pkg/model"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -8,10 +9,9 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	authmodel "minilib/auth/pkg/model"
-	"minilib/pkg/discovery"
-	"minilib/pkg/model"
 	"net/http"
+	"pkg-service/discovery"
+	"pkg-service/model"
 )
 
 type Gateway struct {

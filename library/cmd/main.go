@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"library-service/internal/routes"
 	"log"
-	"minilib/library/internal/routes"
-	"minilib/pkg/discovery"
-	"minilib/pkg/discovery/consul"
+	"pkg-service/discovery"
+	"pkg-service/discovery/consul"
 	"time"
 
 	"github.com/labstack/echo/v4"
