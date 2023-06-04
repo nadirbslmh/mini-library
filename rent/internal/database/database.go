@@ -13,9 +13,9 @@ var DB *gorm.DB
 
 var (
 	DB_USERNAME string = "root"
-	DB_PASSWORD string = ""
+	DB_PASSWORD string = "password"
 	DB_NAME     string = "lib_rent"
-	DB_HOST     string = "localhost"
+	DB_HOST     string = "mariadb-service"
 	DB_PORT     string = "3306"
 )
 

@@ -34,13 +34,13 @@ func main() {
 	routes.SetupRoutes(e, database)
 
 	// start registry
-	registry, err := consul.NewRegistry("localhost:8500")
+	registry, err := consul.NewRegistry("consul-service:8500")
 	if err != nil {
 		panic(err)
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("consul-service:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {

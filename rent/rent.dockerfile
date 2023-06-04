@@ -6,6 +6,6 @@ COPY rentApp /app
 
 RUN apk add libc6-compat
 
-EXPOSE 8083
+EXPOSE 8082
 
 ENTRYPOINT ["./rentApp"]

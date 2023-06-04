@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+  auth-service:
+    build: 
+      context: ./auth
+      dockerfile: ./auth.dockerfile
+    ports:
+      - 8083
+    restart: on-failure
+    networks:
+      - service-network
+    depends_on:
+      - mariadb-service
+
+  book-service:
+    build: 
+      context: ./book
+      dockerfile: ./book.dockerfile
+    ports:
+      - 8081
+    restart: on-failure
+    networks:
+      - service-network
+    depends_on:
+      - mariadb-service
+  
+  rent-service:
+    build: 
+      context: ./rent
+      dockerfile: ./rent.dockerfile
+    ports:
+      - 8082
+    restart: on-failure
+    networks:
+      - service-network
+    depends_on:
+      - mariadb-service
+
+  library-service:
+    build: 
+      context: ./library
+      dockerfile: ./library.dockerfile
+    ports:
+      - 8080:8080
+    restart: on-failure
+    networks:
+      - service-network
+    depends_on:
+      - mariadb-service
+  
+  consul-service:
+    image: consul:latest
+    ports:
+      - 8500
+    networks:
+      - service-network
+  
+  mariadb-service:
+    image: mariadb:latest
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+    ports:
+      - 3306
+    volumes:
+      - /home/nadir/libvolume:/var/lib/mysql
+      - ./mariadb/schema.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    networks:
+      - service-network
+
+networks:
+  service-network:
+    driver: bridge
