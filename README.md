@@ -1,5 +1,7 @@
 # mini-library
 
+A simple book library application with microservices architecture. Written in Go.
+
 ## How to Use
 
 1. Clone this repository.
