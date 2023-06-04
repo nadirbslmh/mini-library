@@ -2,6 +2,10 @@
 
 A simple book library application with microservices architecture. Written in Go.
 
+## Additional Notes
+
+This repository uses http protocol to communicate with other services.
+
 ## How to Use
 
 1. Clone this repository.
