@@ -46,8 +46,6 @@ services:
     restart: on-failure
     networks:
       - service-network
-    depends_on:
-      - mariadb-service
   
   consul-service:
     image: consul:latest
@@ -63,7 +61,6 @@ services:
     ports:
       - 3306
     volumes:
-      - /home/nadir/libvolume:/var/lib/mysql
       - ./mariadb/schema.sql:/data/application/init.sql
     command: --init-file /data/application/init.sql
     networks:

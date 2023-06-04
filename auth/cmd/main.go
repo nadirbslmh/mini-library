@@ -40,7 +40,7 @@ func main() {
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("consul-service:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("auth-service:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {

@@ -1,1 +1,0 @@
-go run library/cmd/main.go
