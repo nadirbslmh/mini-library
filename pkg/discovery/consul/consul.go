@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"minilib/pkg/discovery"
+	"pkg-service/discovery"
 	"strconv"
 	"strings"
 
