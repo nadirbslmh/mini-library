@@ -1,0 +1,1 @@
+protoc -I=api --go_out=./pkg --go-grpc_out=./pkg auth.proto
