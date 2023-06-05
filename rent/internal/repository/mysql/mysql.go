@@ -18,7 +18,6 @@ func New(db *gorm.DB) repository.RentRepository {
 }
 
 func (repo *RentRepositoryImpl) GetAll(userId string) ([]model.Rent, error) {
-	//TODO: get from logged in user
 	var rents []model.Rent
 
 	err := repo.db.Where("user_id = ?", userId).Find(&rents).Error
