@@ -8,8 +8,7 @@ import (
 
 	authgateway "library-service/internal/gateway/auth/grpc"
 	bookgateway "library-service/internal/gateway/book/grpc"
-	bookgatewayhttp "library-service/internal/gateway/book/http"
-	rentgateway "library-service/internal/gateway/rent/http"
+	rentgateway "library-service/internal/gateway/rent/grpc"
 	"library-service/internal/service/library"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -26,10 +25,7 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
 	bookService := library.NewBookService(*bookGateway)
 	bookController := bookcontroller.New(bookService)
 
-	//FOR TESTING ONLY, DELETE SOON
-	bookGatewayHttp := bookgatewayhttp.New(registry)
-
-	rentGateway := rentgateway.New(registry, bookGatewayHttp)
+	rentGateway := rentgateway.New(registry, bookGateway)
 	rentService := library.NewRentService(*rentGateway)
 	rentController := rentcontroller.New(rentService)
 

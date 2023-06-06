@@ -2,16 +2,16 @@ package library
 
 import (
 	"context"
-	"library-service/internal/gateway/rent/http"
+	"library-service/internal/gateway/rent/grpc"
 	"pkg-service/model"
 	rentmodel "rent-service/pkg/model"
 )
 
 type RentService struct {
-	gateway http.Gateway
+	gateway grpc.Gateway
 }
 
-func NewRentService(gateway http.Gateway) *RentService {
+func NewRentService(gateway grpc.Gateway) *RentService {
 	return &RentService{
 		gateway: gateway,
 	}

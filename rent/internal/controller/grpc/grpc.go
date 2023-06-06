@@ -5,7 +5,6 @@ import (
 	"pkg-service/rent_gen"
 	"rent-service/internal/service/rent"
 	"rent-service/pkg/model"
-	"strconv"
 )
 
 type Server struct {
@@ -20,7 +19,7 @@ func New(service *rent.Service) *Server {
 }
 
 func (ctrl *Server) GetAllRents(request *rent_gen.GetAllRentsRequest, stream rent_gen.RentService_GetAllRentsServer) error {
-	userId := strconv.Itoa(int(request.GetUserId()))
+	userId := request.GetUserId()
 
 	rents, err := ctrl.service.GetAll(userId)
 
