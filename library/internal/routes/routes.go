@@ -7,7 +7,8 @@ import (
 	"pkg-service/discovery"
 
 	authgateway "library-service/internal/gateway/auth/grpc"
-	bookgateway "library-service/internal/gateway/book/http"
+	bookgateway "library-service/internal/gateway/book/grpc"
+	bookgatewayhttp "library-service/internal/gateway/book/http"
 	rentgateway "library-service/internal/gateway/rent/http"
 	"library-service/internal/service/library"
 
@@ -25,7 +26,10 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
 	bookService := library.NewBookService(*bookGateway)
 	bookController := bookcontroller.New(bookService)
 
-	rentGateway := rentgateway.New(registry, bookGateway)
+	//FOR TESTING ONLY, DELETE SOON
+	bookGatewayHttp := bookgatewayhttp.New(registry)
+
+	rentGateway := rentgateway.New(registry, bookGatewayHttp)
 	rentService := library.NewRentService(*rentGateway)
 	rentController := rentcontroller.New(rentService)
 

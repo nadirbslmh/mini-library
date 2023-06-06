@@ -3,15 +3,15 @@ package library
 import (
 	bookmodel "book-service/pkg/model"
 	"context"
-	"library-service/internal/gateway/book/http"
+	"library-service/internal/gateway/book/grpc"
 	"pkg-service/model"
 )
 
 type BookService struct {
-	gateway http.Gateway
+	gateway grpc.Gateway
 }
 
-func NewBookService(gateway http.Gateway) *BookService {
+func NewBookService(gateway grpc.Gateway) *BookService {
 	return &BookService{
 		gateway: gateway,
 	}

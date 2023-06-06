@@ -65,7 +65,7 @@ func (ctrl *Server) GetBookByID(ctx context.Context, request *book_gen.GetBookBy
 
 func (ctrl *Server) CreateBook(ctx context.Context, request *book_gen.CreateBookRequest) (*book_gen.CreateBookResponse, error) {
 	var bookInput model.BookInput = model.BookInput{
-		Title:       request.GetAuthor(),
+		Title:       request.GetTitle(),
 		Description: request.GetDescription(),
 		Author:      request.GetAuthor(),
 	}
