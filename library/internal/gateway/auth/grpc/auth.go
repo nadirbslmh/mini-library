@@ -4,9 +4,9 @@ import (
 	authmodel "auth-service/pkg/model"
 	"context"
 	"log"
-	"pkg-service/auth_gen"
 	"pkg-service/discovery"
 	"pkg-service/model"
+	"pkg-service/proto_gen"
 	"pkg-service/util"
 
 	"gorm.io/gorm"
@@ -33,9 +33,9 @@ func (g *Gateway) Register(ctx context.Context, userInput authmodel.UserInput) (
 
 	defer conn.Close()
 
-	var client auth_gen.AuthServiceClient = auth_gen.NewAuthServiceClient(conn)
+	var client proto_gen.AuthServiceClient = proto_gen.NewAuthServiceClient(conn)
 
-	request := &auth_gen.RegisterRequest{
+	request := &proto_gen.RegisterRequest{
 		Email:    userInput.Email,
 		Password: userInput.Password,
 	}
@@ -47,18 +47,18 @@ func (g *Gateway) Register(ctx context.Context, userInput authmodel.UserInput) (
 	}
 
 	return &model.Response[authmodel.User]{
-		Status:  res.Status,
-		Message: res.Message,
+		Status:  res.GetStatus(),
+		Message: res.GetMessage(),
 		Data: authmodel.User{
-			ID:        uint(res.User.Id),
-			CreatedAt: res.User.CreatedAt.AsTime(),
-			UpdatedAt: res.User.UpdatedAt.AsTime(),
+			ID:        uint(res.User.GetId()),
+			CreatedAt: res.User.GetCreatedAt().AsTime(),
+			UpdatedAt: res.User.GetUpdatedAt().AsTime(),
 			DeletedAt: gorm.DeletedAt{
-				Time:  res.User.DeletedAt.GetTime().AsTime(),
-				Valid: res.User.DeletedAt.Valid,
+				Time:  res.User.GetDeletedAt().GetTime().AsTime(),
+				Valid: res.User.GetDeletedAt().GetValid(),
 			},
-			Email:    res.User.Email,
-			Password: res.User.Password,
+			Email:    res.User.GetEmail(),
+			Password: res.User.GetPassword(),
 		},
 	}, nil
 }
@@ -74,9 +74,9 @@ func (g *Gateway) Login(ctx context.Context, userInput authmodel.UserInput) (*mo
 
 	defer conn.Close()
 
-	var client auth_gen.AuthServiceClient = auth_gen.NewAuthServiceClient(conn)
+	var client proto_gen.AuthServiceClient = proto_gen.NewAuthServiceClient(conn)
 
-	request := &auth_gen.LoginRequest{
+	request := &proto_gen.LoginRequest{
 		Email:    userInput.Email,
 		Password: userInput.Password,
 	}
@@ -88,8 +88,8 @@ func (g *Gateway) Login(ctx context.Context, userInput authmodel.UserInput) (*mo
 	}
 
 	return &model.Response[string]{
-		Status:  res.Status,
-		Message: res.Message,
-		Data:    res.Token,
+		Status:  res.GetStatus(),
+		Message: res.GetMessage(),
+		Data:    res.GetToken(),
 	}, nil
 }

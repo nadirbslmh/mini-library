@@ -11,9 +11,9 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"pkg-service/book_gen"
 	"pkg-service/discovery"
 	"pkg-service/discovery/consul"
+	"pkg-service/proto_gen"
 	"time"
 
 	"google.golang.org/grpc"
@@ -67,7 +67,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	book_gen.RegisterBookServiceServer(s, grpc_server.New(service))
+	proto_gen.RegisterBookServiceServer(s, grpc_server.New(service))
 
 	reflection.Register(s)
 

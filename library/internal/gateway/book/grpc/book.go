@@ -4,10 +4,11 @@ import (
 	bookmodel "book-service/pkg/model"
 	"context"
 	"io"
+	grpc_util "library-service/pkg/util"
 	"log"
-	"pkg-service/book_gen"
 	"pkg-service/discovery"
 	"pkg-service/model"
+	"pkg-service/proto_gen"
 	"pkg-service/util"
 )
 
@@ -32,9 +33,9 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]bookmodel.Book]
 
 	defer conn.Close()
 
-	var client book_gen.BookServiceClient = book_gen.NewBookServiceClient(conn)
+	var client proto_gen.BookServiceClient = proto_gen.NewBookServiceClient(conn)
 
-	stream, err := client.GetAllBooks(ctx, &book_gen.GetAllBooksRequest{})
+	stream, err := client.GetAllBooks(ctx, &proto_gen.GetAllBooksRequest{})
 
 	if err != nil {
 		return nil, err
@@ -53,12 +54,7 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]bookmodel.Book]
 			log.Fatalf("Error when streaming: %v\n", err)
 		}
 
-		book := bookmodel.Book{
-			ID:          uint(res.Book.Id),
-			Title:       res.Book.Title,
-			Description: res.Book.Description,
-			Author:      res.Book.Author,
-		}
+		book := grpc_util.MapToBookModel(res.Book)
 
 		books = append(books, book)
 	}
@@ -81,9 +77,9 @@ func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response[bookm
 
 	defer conn.Close()
 
-	var client book_gen.BookServiceClient = book_gen.NewBookServiceClient(conn)
+	var client proto_gen.BookServiceClient = proto_gen.NewBookServiceClient(conn)
 
-	res, err := client.GetBookByID(ctx, &book_gen.GetBookByIDRequest{
+	res, err := client.GetBookByID(ctx, &proto_gen.GetBookByIDRequest{
 		Id: id,
 	})
 
@@ -94,12 +90,7 @@ func (g *Gateway) GetByID(ctx context.Context, id string) (*model.Response[bookm
 	return &model.Response[bookmodel.Book]{
 		Status:  "success",
 		Message: "book found",
-		Data: bookmodel.Book{
-			ID:          uint(res.Book.Id),
-			Title:       res.Book.Title,
-			Description: res.Book.Description,
-			Author:      res.Book.Author,
-		},
+		Data:    grpc_util.MapToBookModel(res.Book),
 	}, nil
 }
 
@@ -114,9 +105,9 @@ func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*m
 
 	defer conn.Close()
 
-	var client book_gen.BookServiceClient = book_gen.NewBookServiceClient(conn)
+	var client proto_gen.BookServiceClient = proto_gen.NewBookServiceClient(conn)
 
-	request := &book_gen.CreateBookRequest{
+	request := &proto_gen.CreateBookRequest{
 		Title:       bookInput.Title,
 		Description: bookInput.Description,
 		Author:      bookInput.Author,
@@ -131,11 +122,6 @@ func (g *Gateway) Create(ctx context.Context, bookInput bookmodel.BookInput) (*m
 	return &model.Response[bookmodel.Book]{
 		Status:  "success",
 		Message: "book created",
-		Data: bookmodel.Book{
-			ID:          uint(res.Book.Id),
-			Title:       res.Book.Title,
-			Description: res.Book.Description,
-			Author:      res.Book.Author,
-		},
+		Data:    grpc_util.MapToBookModel(res.Book),
 	}, nil
 }

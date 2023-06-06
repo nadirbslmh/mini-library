@@ -1,12 +1,8 @@
 syntax = "proto3";
-option go_package="/auth_gen";
+option go_package="/proto_gen";
 
+import "gorm.proto";
 import "google/protobuf/timestamp.proto";
-
-message DeletedAt {
-    google.protobuf.Timestamp time = 1;
-    bool valid = 2;
-}
 
 message User {
   uint32 id = 1;

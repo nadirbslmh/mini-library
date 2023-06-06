@@ -3,12 +3,13 @@ package grpc
 import (
 	"book-service/internal/service/book"
 	"book-service/pkg/model"
+	"book-service/pkg/util"
 	"context"
-	"pkg-service/book_gen"
+	"pkg-service/proto_gen"
 )
 
 type Server struct {
-	book_gen.UnimplementedBookServiceServer
+	proto_gen.UnimplementedBookServiceServer
 	service *book.BookService
 }
 
@@ -18,7 +19,7 @@ func New(service *book.BookService) *Server {
 	}
 }
 
-func (ctrl *Server) GetAllBooks(request *book_gen.GetAllBooksRequest, stream book_gen.BookService_GetAllBooksServer) error {
+func (ctrl *Server) GetAllBooks(request *proto_gen.GetAllBooksRequest, stream proto_gen.BookService_GetAllBooksServer) error {
 	books, err := ctrl.service.GetAll()
 
 	if err != nil {
@@ -26,44 +27,34 @@ func (ctrl *Server) GetAllBooks(request *book_gen.GetAllBooksRequest, stream boo
 	}
 
 	for _, book := range books {
-		stream.Send(&book_gen.GetAllBooksResponse{
-			Book: &book_gen.Book{
-				Id:          uint32(book.ID),
-				Title:       book.Title,
-				Description: book.Description,
-				Author:      book.Author,
-			},
+		stream.Send(&proto_gen.GetAllBooksResponse{
+			Book: util.MapToBookPb(book),
 		})
 	}
 
 	return nil
 }
 
-func (ctrl *Server) GetBookByID(ctx context.Context, request *book_gen.GetBookByIDRequest) (*book_gen.GetBookByIDResponse, error) {
+func (ctrl *Server) GetBookByID(ctx context.Context, request *proto_gen.GetBookByIDRequest) (*proto_gen.GetBookByIDResponse, error) {
 	var bookId string = request.GetId()
 
 	book, err := ctrl.service.GetByID(bookId)
 
 	if err != nil {
-		return &book_gen.GetBookByIDResponse{
+		return &proto_gen.GetBookByIDResponse{
 			Status:  "failed",
 			Message: "book not found",
 		}, err
 	}
 
-	return &book_gen.GetBookByIDResponse{
+	return &proto_gen.GetBookByIDResponse{
 		Status:  "success",
 		Message: "book found",
-		Book: &book_gen.Book{
-			Id:          uint32(book.ID),
-			Title:       book.Title,
-			Description: book.Description,
-			Author:      book.Author,
-		},
+		Book:    util.MapToBookPb(book),
 	}, nil
 }
 
-func (ctrl *Server) CreateBook(ctx context.Context, request *book_gen.CreateBookRequest) (*book_gen.CreateBookResponse, error) {
+func (ctrl *Server) CreateBook(ctx context.Context, request *proto_gen.CreateBookRequest) (*proto_gen.CreateBookResponse, error) {
 	var bookInput model.BookInput = model.BookInput{
 		Title:       request.GetTitle(),
 		Description: request.GetDescription(),
@@ -73,20 +64,15 @@ func (ctrl *Server) CreateBook(ctx context.Context, request *book_gen.CreateBook
 	book, err := ctrl.service.Create(bookInput)
 
 	if err != nil {
-		return &book_gen.CreateBookResponse{
+		return &proto_gen.CreateBookResponse{
 			Status:  "failed",
 			Message: "failed to create a book",
 		}, err
 	}
 
-	return &book_gen.CreateBookResponse{
+	return &proto_gen.CreateBookResponse{
 		Status:  "success",
 		Message: "book created",
-		Book: &book_gen.Book{
-			Id:          uint32(book.ID),
-			Title:       book.Title,
-			Description: book.Description,
-			Author:      book.Author,
-		},
+		Book:    util.MapToBookPb(book),
 	}, nil
 }

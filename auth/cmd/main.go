@@ -12,9 +12,9 @@ import (
 	"os"
 	"os/signal"
 
-	"pkg-service/auth_gen"
 	"pkg-service/discovery"
 	"pkg-service/discovery/consul"
+	"pkg-service/proto_gen"
 
 	"time"
 
@@ -69,7 +69,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	auth_gen.RegisterAuthServiceServer(s, grpc_server.New(service))
+	proto_gen.RegisterAuthServiceServer(s, grpc_server.New(service))
 
 	reflection.Register(s)
 

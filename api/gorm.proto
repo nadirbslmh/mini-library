@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package="/proto_gen";
+
+import "google/protobuf/timestamp.proto";
+
+message DeletedAt {
+    google.protobuf.Timestamp time = 1;
+    bool valid = 2;
+}
