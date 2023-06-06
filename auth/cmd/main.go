@@ -41,13 +41,13 @@ func main() {
 	// routes.SetupRoutes(e, database)
 
 	// start registry
-	registry, err := consul.NewRegistry("consul-service:8500")
+	registry, err := consul.NewRegistry("localhost:8500")
 	if err != nil {
 		panic(err)
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("auth-service:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {
@@ -82,7 +82,7 @@ func main() {
 	reflection.Register(s)
 
 	go func() {
-		fmt.Println("Starting server...")
+		fmt.Println("Starting auth service...")
 		if err := s.Serve(lis); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
 		}
@@ -92,7 +92,7 @@ func main() {
 	signal.Notify(ch, os.Interrupt)
 
 	<-ch
-	fmt.Println("Stopping the server..")
+	fmt.Println("Stopping the auth service..")
 	s.Stop()
 	fmt.Println("Stopping listener...")
 	lis.Close()

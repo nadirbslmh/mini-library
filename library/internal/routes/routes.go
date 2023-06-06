@@ -6,7 +6,7 @@ import (
 	rentcontroller "library-service/internal/controller/rent/http"
 	"pkg-service/discovery"
 
-	authgateway "library-service/internal/gateway/auth/http"
+	authgateway "library-service/internal/gateway/auth/grpc"
 	bookgateway "library-service/internal/gateway/book/http"
 	rentgateway "library-service/internal/gateway/rent/http"
 	"library-service/internal/service/library"

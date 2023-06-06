@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.0.0
-	github.com/golang/protobuf v1.5.3
 	github.com/hashicorp/consul/api v1.21.0
 	github.com/labstack/echo-jwt/v4 v4.2.0
 	github.com/labstack/echo/v4 v4.10.2
@@ -16,6 +15,7 @@ require (
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.1 // indirect
 	github.com/hashicorp/go-hclog v0.12.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.0.0 // indirect

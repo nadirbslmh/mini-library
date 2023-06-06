@@ -3,15 +3,15 @@ package library
 import (
 	authmodel "auth-service/pkg/model"
 	"context"
-	"library-service/internal/gateway/auth/http"
+	"library-service/internal/gateway/auth/grpc"
 	"pkg-service/model"
 )
 
 type AuthService struct {
-	gateway http.Gateway
+	gateway grpc.Gateway
 }
 
-func NewAuthService(gateway http.Gateway) *AuthService {
+func NewAuthService(gateway grpc.Gateway) *AuthService {
 	return &AuthService{
 		gateway: gateway,
 	}
