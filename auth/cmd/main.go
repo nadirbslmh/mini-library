@@ -26,19 +26,11 @@ const serviceName = "auth"
 const port = 8083
 
 func main() {
-	// e := echo.New()
-
-	// e.Use(middleware.Recover())
-	// e.Use(middleware.Logger())
-
-	// init database
 	database, err := database.InitDatabase()
 
 	if err != nil {
 		panic(err)
 	}
-
-	// routes.SetupRoutes(e, database)
 
 	// start registry
 	registry, err := consul.NewRegistry("localhost:8500")
@@ -97,7 +89,4 @@ func main() {
 	fmt.Println("Stopping listener...")
 	lis.Close()
 	fmt.Println("End of Program")
-
-	// start server
-	// e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }
