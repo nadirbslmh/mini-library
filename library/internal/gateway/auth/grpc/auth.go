@@ -8,6 +8,8 @@ import (
 	"pkg-service/discovery"
 	"pkg-service/model"
 	"pkg-service/util"
+
+	"gorm.io/gorm"
 )
 
 type Gateway struct {
@@ -48,7 +50,13 @@ func (g *Gateway) Register(ctx context.Context, userInput authmodel.UserInput) (
 		Status:  res.Status,
 		Message: res.Message,
 		Data: authmodel.User{
-			ID:       uint(res.User.Id),
+			ID:        uint(res.User.Id),
+			CreatedAt: res.User.CreatedAt.AsTime(),
+			UpdatedAt: res.User.UpdatedAt.AsTime(),
+			DeletedAt: gorm.DeletedAt{
+				Time:  res.User.DeletedAt.GetTime().AsTime(),
+				Valid: res.User.DeletedAt.Valid,
+			},
 			Email:    res.User.Email,
 			Password: res.User.Password,
 		},

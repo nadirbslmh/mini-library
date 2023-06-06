@@ -5,6 +5,8 @@ import (
 	"auth-service/pkg/model"
 	"context"
 	"pkg-service/auth_gen"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Server struct {
@@ -37,7 +39,13 @@ func (ctrl *Server) Register(ctx context.Context, request *auth_gen.RegisterRequ
 		Status:  "success",
 		Message: "user created",
 		User: &auth_gen.User{
-			Id:       uint32(user.ID),
+			Id:        uint32(user.ID),
+			CreatedAt: timestamppb.New(user.CreatedAt),
+			UpdatedAt: timestamppb.New(user.UpdatedAt),
+			DeletedAt: &auth_gen.DeletedAt{
+				Time:  timestamppb.New(user.DeletedAt.Time),
+				Valid: user.DeletedAt.Valid,
+			},
 			Email:    user.Email,
 			Password: user.Password,
 		},

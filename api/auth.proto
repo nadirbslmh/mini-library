@@ -1,8 +1,18 @@
 syntax = "proto3";
 option go_package="/auth_gen";
 
+import "google/protobuf/timestamp.proto";
+
+message DeletedAt {
+    google.protobuf.Timestamp time = 1;
+    bool valid = 2;
+}
+
 message User {
   uint32 id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  DeletedAt deleted_at = 4;
   string email = 5;
   string password = 6;
 }
