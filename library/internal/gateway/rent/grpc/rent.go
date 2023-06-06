@@ -6,10 +6,11 @@ import (
 	"io"
 	bookgateway "library-service/internal/gateway/book/grpc"
 	"library-service/pkg/constant"
+	grpc_util "library-service/pkg/util"
 	"log"
 	"pkg-service/discovery"
 	"pkg-service/model"
-	"pkg-service/rent_gen"
+	"pkg-service/proto_gen"
 	"pkg-service/util"
 	rentmodel "rent-service/pkg/model"
 	"strconv"
@@ -46,9 +47,9 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]rentmodel.Rent]
 
 	defer conn.Close()
 
-	var client rent_gen.RentServiceClient = rent_gen.NewRentServiceClient(conn)
+	var client proto_gen.RentServiceClient = proto_gen.NewRentServiceClient(conn)
 
-	request := &rent_gen.GetAllRentsRequest{
+	request := &proto_gen.GetAllRentsRequest{
 		UserId: userID,
 	}
 
@@ -71,12 +72,7 @@ func (g *Gateway) GetAll(ctx context.Context) (*model.Response[[]rentmodel.Rent]
 			log.Fatalf("Error when streaming: %v\n", err)
 		}
 
-		rent := rentmodel.Rent{
-			ID:        uint(res.Rent.Id),
-			UserID:    int(res.Rent.UserId),
-			BookID:    int(res.Rent.BookId),
-			BookTitle: res.Rent.BookTitle,
-		}
+		rent := grpc_util.MapToRentModel(res.Rent)
 
 		rents = append(rents, rent)
 	}
@@ -111,9 +107,9 @@ func (g *Gateway) Create(ctx context.Context, rentInput rentmodel.RentInput) (*m
 
 	defer conn.Close()
 
-	var client rent_gen.RentServiceClient = rent_gen.NewRentServiceClient(conn)
+	var client proto_gen.RentServiceClient = proto_gen.NewRentServiceClient(conn)
 
-	request := &rent_gen.CreateRentRequest{
+	request := &proto_gen.CreateRentRequest{
 		UserId:    int32(rentInput.UserID),
 		BookId:    int32(rentInput.BookID),
 		BookTitle: rentInput.BookTitle,
@@ -128,11 +124,6 @@ func (g *Gateway) Create(ctx context.Context, rentInput rentmodel.RentInput) (*m
 	return &model.Response[rentmodel.Rent]{
 		Status:  "success",
 		Message: "book rent created",
-		Data: rentmodel.Rent{
-			ID:        uint(res.Rent.Id),
-			UserID:    int(res.Rent.UserId),
-			BookID:    int(res.Rent.BookId),
-			BookTitle: res.Rent.BookTitle,
-		},
+		Data:    grpc_util.MapToRentModel(res.Rent),
 	}, nil
 }

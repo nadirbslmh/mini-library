@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"pkg-service/discovery"
 	"pkg-service/discovery/consul"
-	"pkg-service/rent_gen"
+	"pkg-service/proto_gen"
 	grpc_server "rent-service/internal/controller/grpc"
 	"rent-service/internal/database"
 	"rent-service/internal/repository/mysql"
@@ -67,7 +67,7 @@ func main() {
 
 	s := grpc.NewServer()
 
-	rent_gen.RegisterRentServiceServer(s, grpc_server.New(service))
+	proto_gen.RegisterRentServiceServer(s, grpc_server.New(service))
 
 	reflection.Register(s)
 

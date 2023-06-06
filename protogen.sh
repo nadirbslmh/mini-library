@@ -2,7 +2,7 @@
 # protoc -I=api --go_out=./pkg --go-grpc_out=./pkg gorm.proto
 
 # generate code for proto files with imports [use this!]
-# protoc -I=api --go_out=./pkg --go-grpc_out=./pkg gorm.proto auth.proto book.proto
+protoc -I=api --go_out=./pkg --go-grpc_out=./pkg gorm.proto book.proto auth.proto rent.proto
 
 
 # generate code for auth grpc

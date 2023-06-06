@@ -2,13 +2,14 @@ package grpc
 
 import (
 	"context"
-	"pkg-service/rent_gen"
+	"pkg-service/proto_gen"
 	"rent-service/internal/service/rent"
 	"rent-service/pkg/model"
+	"rent-service/pkg/util"
 )
 
 type Server struct {
-	rent_gen.UnimplementedRentServiceServer
+	proto_gen.UnimplementedRentServiceServer
 	service *rent.Service
 }
 
@@ -18,7 +19,7 @@ func New(service *rent.Service) *Server {
 	}
 }
 
-func (ctrl *Server) GetAllRents(request *rent_gen.GetAllRentsRequest, stream rent_gen.RentService_GetAllRentsServer) error {
+func (ctrl *Server) GetAllRents(request *proto_gen.GetAllRentsRequest, stream proto_gen.RentService_GetAllRentsServer) error {
 	userId := request.GetUserId()
 
 	rents, err := ctrl.service.GetAll(userId)
@@ -28,20 +29,15 @@ func (ctrl *Server) GetAllRents(request *rent_gen.GetAllRentsRequest, stream ren
 	}
 
 	for _, rent := range rents {
-		stream.Send(&rent_gen.GetAllRentsResponse{
-			Rent: &rent_gen.Rent{
-				Id:        uint32(rent.ID),
-				UserId:    int32(rent.UserID),
-				BookId:    int32(rent.BookID),
-				BookTitle: rent.BookTitle,
-			},
+		stream.Send(&proto_gen.GetAllRentsResponse{
+			Rent: util.MapToRentPb(rent),
 		})
 	}
 
 	return nil
 }
 
-func (ctrl *Server) CreateRent(ctx context.Context, request *rent_gen.CreateRentRequest) (*rent_gen.CreateRentResponse, error) {
+func (ctrl *Server) CreateRent(ctx context.Context, request *proto_gen.CreateRentRequest) (*proto_gen.CreateRentResponse, error) {
 	var rentInput model.RentInput = model.RentInput{
 		UserID:    int(request.GetUserId()),
 		BookID:    int(request.GetBookId()),
@@ -51,20 +47,15 @@ func (ctrl *Server) CreateRent(ctx context.Context, request *rent_gen.CreateRent
 	rent, err := ctrl.service.Create(rentInput)
 
 	if err != nil {
-		return &rent_gen.CreateRentResponse{
+		return &proto_gen.CreateRentResponse{
 			Status:  "failed",
 			Message: "failed to create a book rent",
 		}, err
 	}
 
-	return &rent_gen.CreateRentResponse{
+	return &proto_gen.CreateRentResponse{
 		Status:  "success",
 		Message: "book rent created",
-		Rent: &rent_gen.Rent{
-			Id:        uint32(rent.ID),
-			UserId:    int32(rent.UserID),
-			BookId:    int32(rent.BookID),
-			BookTitle: rent.BookTitle,
-		},
+		Rent:    util.MapToRentPb(rent),
 	}, nil
 }
