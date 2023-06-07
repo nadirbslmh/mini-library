@@ -26,6 +26,15 @@ func (ctrl *Server) Register(ctx context.Context, request *proto_gen.RegisterReq
 		Password: request.GetPassword(),
 	}
 
+	err := userInput.Validate()
+
+	if err != nil {
+		return &proto_gen.RegisterResponse{
+			Status:  "failed",
+			Message: "validation failed",
+		}, err
+	}
+
 	user, err := ctrl.service.Register(userInput)
 
 	if err != nil {
@@ -56,6 +65,15 @@ func (ctrl *Server) Login(ctx context.Context, request *proto_gen.LoginRequest) 
 	userInput := model.UserInput{
 		Email:    request.GetEmail(),
 		Password: request.GetPassword(),
+	}
+
+	err := userInput.Validate()
+
+	if err != nil {
+		return &proto_gen.LoginResponse{
+			Status:  "failed",
+			Message: "validation failed",
+		}, err
 	}
 
 	token, err := ctrl.service.Login(userInput)

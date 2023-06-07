@@ -44,6 +44,15 @@ func (ctrl *Server) CreateRent(ctx context.Context, request *proto_gen.CreateRen
 		BookTitle: request.GetBookTitle(),
 	}
 
+	err := rentInput.Validate()
+
+	if err != nil {
+		return &proto_gen.CreateRentResponse{
+			Status:  "failed",
+			Message: "validation failed",
+		}, err
+	}
+
 	rent, err := ctrl.service.Create(rentInput)
 
 	if err != nil {

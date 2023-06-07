@@ -61,6 +61,15 @@ func (ctrl *Server) CreateBook(ctx context.Context, request *proto_gen.CreateBoo
 		Author:      request.GetAuthor(),
 	}
 
+	err := bookInput.Validate()
+
+	if err != nil {
+		return &proto_gen.CreateBookResponse{
+			Status:  "failed",
+			Message: "validation failed",
+		}, err
+	}
+
 	book, err := ctrl.service.Create(bookInput)
 
 	if err != nil {
