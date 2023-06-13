@@ -8,15 +8,17 @@ A simple book library application with microservices architecture. Written in Go
 
 2. Make sure `make` and `docker` are installed.
 
-3. Build the application.
+3. There is a library that requires C language feature in this repository (example: `confluent-kafka-go`). Make sure [`musl`](https://musl.libc.org/) is installed.
+
+4. Build the application.
 
 ```sh
 make up_build
 ```
 
-4. The endpoints are available in this base url: `http://localhost:8080/api/v1`.
+5. The endpoints are available in this base url: `http://localhost:8080/api/v1`.
 
-5. Stop the application.
+6. Stop the application.
 
 ```sh
 make down
