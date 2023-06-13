@@ -128,7 +128,6 @@ func (g *Gateway) Create(ctx context.Context, rentInput rentmodel.RentInput) (*m
 		return nil, err
 	}
 
-	//TODO: write rent log with Kafka
 	go func() {
 		for e := range g.producer.Events() {
 			switch ev := e.(type) {
