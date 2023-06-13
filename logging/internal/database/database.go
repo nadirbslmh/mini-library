@@ -14,7 +14,7 @@ type MongoInstance struct {
 }
 
 func InitMongo(dbName string) (MongoInstance, error) {
-	mongoURI := "mongodb://localhost:27017"
+	mongoURI := "mongodb://mongodb-service:27017"
 
 	client, _ := mongo.NewClient(options.Client().ApplyURI(mongoURI))
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)

@@ -26,57 +26,6 @@ func New(registry discovery.Registry) *Gateway {
 func (g *Gateway) Register(ctx context.Context, userInput authmodel.UserInput) (*model.Response[authmodel.User], error) {
 	log.Println("calling auth service with gRPC: register")
 
-	// go func() {
-	// 	for e := range g.producer.Events() {
-	// 		switch ev := e.(type) {
-	// 		case *kafka.Message:
-	// 			if ev.TopicPartition.Error != nil {
-	// 				fmt.Printf("Failed to deliver message: %v\n", ev.TopicPartition)
-	// 			} else {
-	// 				fmt.Printf("Produced event to topic %s: key = %-10s value = %s\n",
-	// 					*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
-	// 			}
-	// 		}
-	// 	}
-	// }()
-
-	// key := []byte("register")
-
-	// input, err := json.Marshal(&userInput)
-
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// topic := constant.AUTH_TOPIC
-
-	// message := &kafka.Message{
-	// 	TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-	// 	Key:            key,
-	// 	Value:          input,
-	// }
-
-	// err = kafka_util.SendMessage(g.producer, message)
-
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// return nil, nil
-
-	// producer.Produce(&kafka.Message{
-	// 	TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-	// 	Key:            key,
-	// 	Value:          value,
-	// }, nil)
-
-	// producer.Flush(15 * 1000)
-	// producer.Close()
-
-	// return nil, nil
-
-	//UNDER CONSTRUCTION
-
 	conn, err := util.ConnectgRPCService(ctx, "auth", g.registry)
 
 	if err != nil {

@@ -21,7 +21,7 @@ const port = 9000
 
 func main() {
 	config := &kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092",
+		"bootstrap.servers": "kafka-service:9092",
 		"group.id":          "kafka-go",
 		"auto.offset.reset": "earliest",
 	}
@@ -43,13 +43,13 @@ func main() {
 	}
 
 	// start registry
-	registry, err := consul.NewRegistry("localhost:8500")
+	registry, err := consul.NewRegistry("consul-service:8500")
 	if err != nil {
 		panic(err)
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("listener-service:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {
