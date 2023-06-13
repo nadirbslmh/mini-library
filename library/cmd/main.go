@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"library-service/internal/routes"
+	"library-service/pkg/util"
 	"log"
 	"pkg-service/discovery"
 	"pkg-service/discovery/consul"
 	"time"
 
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -42,7 +44,18 @@ func main() {
 	}()
 	defer registry.Deregister(ctx, instanceID, serviceName)
 
-	routes.SetupRoutes(e, registry)
+	// create kafka producer
+	config := &kafka.ConfigMap{
+		"bootstrap.servers": "localhost:9092",
+	}
+
+	producer, err := util.CreateProducer(config)
+
+	if err != nil {
+		panic(err)
+	}
+
+	routes.SetupRoutes(e, registry, producer)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }

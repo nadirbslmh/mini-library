@@ -11,13 +11,14 @@ import (
 	rentgateway "library-service/internal/gateway/rent/grpc"
 	"library-service/internal/service/library"
 
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 
 	"pkg-service/auth"
 )
 
-func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
+func SetupRoutes(e *echo.Echo, registry discovery.Registry, producer *kafka.Producer) {
 	jwtConfig := auth.NewDefaultConfig()
 	authMiddlewareConfig := jwtConfig.Init()
 
@@ -25,7 +26,7 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry) {
 	bookService := library.NewBookService(*bookGateway)
 	bookController := bookcontroller.New(bookService)
 
-	rentGateway := rentgateway.New(registry, bookGateway)
+	rentGateway := rentgateway.New(registry, bookGateway, producer)
 	rentService := library.NewRentService(*rentGateway)
 	rentController := rentcontroller.New(rentService)
 

@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.1.1
-	github.com/google/uuid v1.3.0
 	github.com/labstack/echo-jwt/v4 v4.2.0
 	github.com/labstack/echo/v4 v4.10.2
 	gorm.io/gorm v1.25.1
