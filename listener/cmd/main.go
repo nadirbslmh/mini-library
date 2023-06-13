@@ -1,33 +1,68 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"listener/pkg/util"
+	"log"
 	"os"
 	"os/signal"
+	"pkg-service/constant"
+	"pkg-service/discovery"
+	"pkg-service/discovery/consul"
 	"syscall"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
+const serviceName = "listener"
+const port = 9000
+
 func main() {
-	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
+	config := &kafka.ConfigMap{
 		"bootstrap.servers": "localhost:9092",
 		"group.id":          "kafka-go",
 		"auto.offset.reset": "earliest",
-	})
+	}
+
+	consumer, err := util.CreateConsumer(config)
 
 	if err != nil {
 		panic(err)
 	}
 
-	topic := "auth"
+	logTopic := constant.LOG_TOPIC
 
-	err = consumer.SubscribeTopics([]string{topic}, nil)
+	topics := []string{logTopic}
+
+	err = consumer.SubscribeTopics(topics, nil)
 
 	if err != nil {
 		panic(err)
 	}
+
+	// start registry
+	registry, err := consul.NewRegistry("localhost:8500")
+	if err != nil {
+		panic(err)
+	}
+	ctx := context.Background()
+	instanceID := discovery.GenerateInstanceID(serviceName)
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
+		panic(err)
+	}
+	go func() {
+		for {
+			if err := registry.ReportHealthyState(instanceID, serviceName); err != nil {
+				log.Println("Failed to report healthy state: " + err.Error())
+			}
+			time.Sleep(1 * time.Second)
+		}
+	}()
+	defer registry.Deregister(ctx, instanceID, serviceName)
+
+	log.Println("listener is started")
 
 	// Set up a channel for handling Ctrl-C, etc
 	sigchan := make(chan os.Signal, 1)
@@ -46,8 +81,7 @@ func main() {
 				// Errors are informational and automatically handled by the consumer
 				continue
 			}
-			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
-				*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
+			util.HandleMessage(string(ev.Key), ev.Value, registry)
 		}
 	}
 

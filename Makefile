@@ -3,6 +3,7 @@ BOOK_BINARY=bookApp
 RENT_BINARY=rentApp
 LIB_BINARY=libApp
 LISTENER_BINARY=listenerApp
+LOG_BINARY=logApp
 
 ## up: starts all containers in the background without forcing build
 up:
@@ -11,7 +12,7 @@ up:
 	@echo "Docker images started!"
 
 ## up_build: stops docker compose (if running), builds all projects and starts docker compose
-up_build: build_auth build_book build_rent build_lib build_listener
+up_build: build_auth build_book build_rent build_lib build_listener build_log
 	@echo "Stopping docker images (if running...)"
 	docker compose down
 	@echo "Building (when required) and starting docker images..."
@@ -53,4 +54,10 @@ build_lib:
 build_listener:
 	@echo "Building listener binary..."
 	cd ./listener && env GOOS=linux CC=/usr/bin/musl-gcc go build --ldflags '-linkmode external -extldflags "-static"' -tags musl -o ${LISTENER_BINARY} cmd/*.go
+	@echo "Done!"
+
+## build_log: builds the log binary as a linux executable
+build_log:
+	@echo "Building logging binary..."
+	cd ./logging && env GOOS=linux CGO_ENABLED=0 go build -o ${LOG_BINARY} cmd/*.go
 	@echo "Done!"
