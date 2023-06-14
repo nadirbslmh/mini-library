@@ -62,7 +62,7 @@ services:
       context: ./listener
       dockerfile: ./listener.dockerfile
     ports:
-      - 8085
+      - 9000
     restart: on-failure
     networks:
       - service-network
