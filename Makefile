@@ -44,7 +44,6 @@ build_rent:
 	@echo "Done!"
 
 ## build_lib: builds the library binary as a linux executable
-## cd ./library && env GOOS=linux go build -o ${LIB_BINARY} cmd/*.go
 build_lib:
 	@echo "Building library binary..."
 	cd ./library && env GOOS=linux CC=/usr/bin/musl-gcc go build --ldflags '-linkmode external -extldflags "-static"' -tags musl -o ${LIB_BINARY} cmd/*.go
