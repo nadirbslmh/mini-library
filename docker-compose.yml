@@ -44,6 +44,9 @@ services:
     ports:
       - 8080
     restart: on-failure
+    deploy:
+      mode: replicated
+      replicas: 3
     networks:
       - service-network
 

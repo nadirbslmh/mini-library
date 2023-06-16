@@ -16,7 +16,7 @@ A simple book library application with microservices architecture. Written in Go
 make up_build
 ```
 
-5. The endpoints are available in this base url: `http://localhost:8080/api/v1`.
+5. The endpoints are available in this base url: `http://localhost:1323/api/v1`.
 
 6. Stop the application.
 
