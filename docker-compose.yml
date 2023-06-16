@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   auth-service:
-    build: 
+    build:
       context: ./auth
       dockerfile: ./auth.dockerfile
     ports:
@@ -14,7 +14,7 @@ services:
       - mariadb-service
 
   book-service:
-    build: 
+    build:
       context: ./book
       dockerfile: ./book.dockerfile
     ports:
@@ -24,9 +24,9 @@ services:
       - service-network
     depends_on:
       - mariadb-service
-  
+
   rent-service:
-    build: 
+    build:
       context: ./rent
       dockerfile: ./rent.dockerfile
     ports:
@@ -38,17 +38,17 @@ services:
       - mariadb-service
 
   library-service:
-    build: 
+    build:
       context: ./library
       dockerfile: ./library.dockerfile
     ports:
-      - 8080:8080
+      - 8080
     restart: on-failure
     networks:
       - service-network
 
   logging-service:
-    build: 
+    build:
       context: ./logging
       dockerfile: ./logging.dockerfile
     ports:
@@ -58,7 +58,7 @@ services:
       - service-network
 
   listener-service:
-    build: 
+    build:
       context: ./listener
       dockerfile: ./listener.dockerfile
     ports:
@@ -66,7 +66,7 @@ services:
     restart: on-failure
     networks:
       - service-network
-  
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper
@@ -101,7 +101,7 @@ services:
       - 8500
     networks:
       - service-network
-  
+
   mariadb-service:
     image: mariadb:latest
     environment:
@@ -113,11 +113,21 @@ services:
     command: --init-file /data/application/init.sql
     networks:
       - service-network
-  
+
   mongodb-service:
     image: mongo:latest
     ports:
       - 27017
+    networks:
+      - service-network
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1323:80
+    depends_on:
+      - library-service
+    restart: always
     networks:
       - service-network
 

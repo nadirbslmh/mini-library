@@ -16,7 +16,7 @@ up_build: build_auth build_book build_rent build_lib build_listener build_log
 	@echo "Stopping docker images (if running...)"
 	docker compose down
 	@echo "Building (when required) and starting docker images..."
-	docker compose up --build -d
+	docker compose up --build -d --scale library-service=3
 	@echo "Docker images built and started!"
 
 ## down: stop docker compose
