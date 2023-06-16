@@ -5,6 +5,7 @@ import (
 	"auth-service/internal/database"
 	"auth-service/internal/repository/mysql"
 	"auth-service/internal/service/auth"
+	"auth-service/pkg/util"
 	"context"
 	"fmt"
 	"log"
@@ -18,6 +19,7 @@ import (
 
 	"time"
 
+	"github.com/hashicorp/consul/api"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -26,20 +28,35 @@ const serviceName = "auth"
 const port = 8083
 
 func main() {
-	database, err := database.InitDatabase()
+	// init config
+	consulCfg := api.DefaultConfig()
+	consulCfg.Address = "localhost:8500"
+
+	client, err := api.NewClient(consulCfg)
+	if err != nil {
+		panic(err)
+	}
+
+	dbCfg, err := util.GetDBConfigs(client)
+
+	if err != nil {
+		panic(err)
+	}
+
+	database, err := database.InitDatabase(dbCfg)
 
 	if err != nil {
 		panic(err)
 	}
 
 	// start registry
-	registry, err := consul.NewRegistry("consul-service:8500")
+	registry, err := consul.NewRegistry("localhost:8500")
 	if err != nil {
 		panic(err)
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("auth-service:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {
@@ -60,7 +77,7 @@ func main() {
 
 	fmt.Println("auth service started")
 
-	serverPort := fmt.Sprintf("auth-service:%d", port)
+	serverPort := fmt.Sprintf("localhost:%d", port)
 
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {

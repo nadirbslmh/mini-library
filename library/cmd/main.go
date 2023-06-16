@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"github.com/hashicorp/consul/api"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,19 +20,34 @@ const serviceName = "library"
 const port = 8080
 
 func main() {
+	// init config
+	consulCfg := api.DefaultConfig()
+	consulCfg.Address = "localhost:8500"
+
+	client, err := api.NewClient(consulCfg)
+	if err != nil {
+		panic(err)
+	}
+
+	err = util.InitializeConfigs(client)
+
+	if err != nil {
+		panic(err)
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
 
 	// start registry
-	registry, err := consul.NewRegistry("consul-service:8500")
+	registry, err := consul.NewRegistry("localhost:8500")
 	if err != nil {
 		panic(err)
 	}
 	ctx := context.Background()
 	instanceID := discovery.GenerateInstanceID(serviceName)
-	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("library-service:%d", port)); err != nil {
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
 		panic(err)
 	}
 	go func() {
@@ -46,7 +62,7 @@ func main() {
 
 	// create kafka producer
 	config := &kafka.ConfigMap{
-		"bootstrap.servers": "kafka-service:9092",
+		"bootstrap.servers": "localhost:9092",
 	}
 
 	producer, err := util.CreateProducer(config)
