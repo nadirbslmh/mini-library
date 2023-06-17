@@ -4,6 +4,8 @@ RUN apk update && apk add --no-cache bash ca-certificates git gcc g++ musl-dev l
 
 WORKDIR /app
 
+COPY .env /app
+
 COPY libApp /app
 
 EXPOSE 8080

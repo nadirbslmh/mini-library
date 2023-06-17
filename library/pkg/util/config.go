@@ -11,7 +11,7 @@ import (
 )
 
 func GetConfig(key string) string {
-	viper.AddConfigPath("./library")
+	viper.AddConfigPath(".")
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 

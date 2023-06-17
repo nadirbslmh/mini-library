@@ -49,6 +49,8 @@ services:
       replicas: 3
     networks:
       - service-network
+    depends_on:
+      - consul-service
 
   logging-service:
     build:
