@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"pkg-service/constant"
 	"rent-service/pkg/model"
 
 	"gorm.io/driver/mysql"
@@ -11,17 +12,17 @@ import (
 
 var DB *gorm.DB
 
-var (
-	DB_USERNAME string = "root"
-	DB_PASSWORD string = "password"
-	DB_NAME     string = "lib_rent"
-	DB_HOST     string = "mariadb-service"
-	DB_PORT     string = "3306"
-)
-
 // connect to the database
-func InitDatabase() (*gorm.DB, error) {
+func InitDatabase(configs map[string]string) (*gorm.DB, error) {
 	var err error
+
+	var (
+		DB_USERNAME string = configs[constant.RENT_DB_USERNAME]
+		DB_PASSWORD string = configs[constant.RENT_DB_PASSWORD]
+		DB_NAME     string = configs[constant.RENT_DB_NAME]
+		DB_HOST     string = configs[constant.RENT_DB_HOST]
+		DB_PORT     string = configs[constant.RENT_DB_PORT]
+	)
 
 	var dsn string = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		DB_USERNAME,

@@ -47,11 +47,17 @@ func InitializeConfigs(client *api.Client) error {
 		constant.RENT_DB_PORT:     GetConfig(constant.RENT_DB_PORT),
 	}
 
+	logServiceConfig := map[string]string{
+		constant.LOG_DB_NAME:   GetConfig(constant.LOG_DB_NAME),
+		constant.LOG_MONGO_URI: GetConfig(constant.LOG_MONGO_URI),
+	}
+
 	authErr := util.SetBatchConfigValues(client, authServiceConfig)
 	bookErr := util.SetBatchConfigValues(client, bookServiceConfig)
 	rentErr := util.SetBatchConfigValues(client, rentServiceConfig)
+	logErr := util.SetBatchConfigValues(client, logServiceConfig)
 
-	isFailed := authErr != nil || bookErr != nil || rentErr != nil
+	isFailed := authErr != nil || bookErr != nil || rentErr != nil || logErr != nil
 
 	if isFailed {
 		return errors.New("config initialization failed")

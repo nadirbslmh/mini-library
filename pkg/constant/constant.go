@@ -27,3 +27,8 @@ const (
 	RENT_DB_HOST     = "RENT_DB_HOST"
 	RENT_DB_PORT     = "RENT_DB_PORT"
 )
+
+const (
+	LOG_MONGO_URI = "LOG_MONGO_URI"
+	LOG_DB_NAME   = "LOG_DB_NAME"
+)
