@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-logging-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-logging
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mongo-logging
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:latest
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "root"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-logging-secret
+                  key: password
+          ports:
+            - containerPort: 27017
+              name: mongo-logging
+          volumeMounts:
+            - name: mongo-logging-persistent-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongo-logging-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-logging-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-logging-service
+spec:
+  selector:
+    app: mongo-logging
+  ports:
+    - protocol: TCP
+      port: 27017
