@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      containers:
+        - name: consul
+          image: consul:latest
+          ports:
+            - containerPort: 8500
+          args:
+            - agent
+            - -server
+            - -bootstrap-expect=1
+            - -ui
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul-service
+spec:
+  selector:
+    app: consul
+  ports:
+    - protocol: TCP
+      port: 8500

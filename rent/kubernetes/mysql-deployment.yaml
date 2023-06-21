@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-rent-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-rent
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-rent
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-rent-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              value: lib_rent
+          ports:
+            - containerPort: 3306
+              name: mysql-rent
+          volumeMounts:
+            - name: mysql-rent-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-rent-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-rent-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-rent-service
+spec:
+  selector:
+    app: mysql-rent
+  ports:
+    - protocol: TCP
+      port: 3306
