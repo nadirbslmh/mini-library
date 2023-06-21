@@ -3,6 +3,7 @@ package util
 import (
 	"errors"
 	"log"
+	"os"
 	"pkg-service/constant"
 	"pkg-service/util"
 
@@ -11,6 +12,12 @@ import (
 )
 
 func GetConfig(key string) string {
+	var fromEnv string = os.Getenv(key)
+
+	if fromEnv != "" {
+		return fromEnv
+	}
+
 	viper.AddConfigPath(".")
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
