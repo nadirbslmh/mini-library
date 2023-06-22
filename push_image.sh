@@ -19,5 +19,11 @@ docker tag rent-service:v1 nadirbasalamah/rent-service:v1
 docker push nadirbasalamah/rent-service:v1
 
 # logging
+docker build -t logging-service:v1 -f logging.dockerfile .
+docker tag logging-service:v1 nadirbasalamah/logging-service:v1
+docker push nadirbasalamah/logging-service:v1
 
 # listener
+docker build -t listener-service:v1 -f listener.dockerfile .
+docker tag listener-service:v1 nadirbasalamah/listener-service:v1
+docker push nadirbasalamah/listener-service:v1
