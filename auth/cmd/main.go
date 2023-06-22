@@ -77,7 +77,7 @@ func main() {
 
 	fmt.Println("auth service started")
 
-	serverPort := fmt.Sprintf("auth-service:%d", port)
+	serverPort := fmt.Sprintf("0.0.0.0:%d", port)
 
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
