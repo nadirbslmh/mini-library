@@ -17,11 +17,6 @@ spec:
           image: consul:latest
           ports:
             - containerPort: 8500
-          args:
-            - agent
-            - -server
-            - -bootstrap-expect=1
-            - -ui
           resources:
             requests:
               cpu: 100m

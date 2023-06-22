@@ -67,6 +67,11 @@ func InitializeConfigs(client *api.Client) error {
 	isFailed := authErr != nil || bookErr != nil || rentErr != nil || logErr != nil
 
 	if isFailed {
+		log.Println("error occurred in auth: ", authErr)
+		log.Println("error occurred in book: ", bookErr)
+		log.Println("error occurred in rent: ", rentErr)
+		log.Println("error occurred in log: ", logErr)
+
 		return errors.New("config initialization failed")
 	}
 
