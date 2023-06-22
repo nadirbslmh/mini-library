@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: listener-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: listener
+  template:
+    metadata:
+      labels:
+        app: listener
+    spec:
+      containers:
+        - name: listener
+          image: nadirbasalamah/listener-service:v1
+          ports:
+            - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: listener-service
+spec:
+  selector:
+    app: listener
+  ports:
+    - protocol: TCP
+      port: 9000
