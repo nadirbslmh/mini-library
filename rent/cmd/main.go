@@ -75,7 +75,7 @@ func main() {
 
 	fmt.Println("rent service started")
 
-	serverPort := fmt.Sprintf("rent-service:%d", port)
+	serverPort := fmt.Sprintf("0.0.0.0:%d", port)
 
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
