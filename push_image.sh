@@ -14,6 +14,9 @@ docker tag book-service:v1 nadirbasalamah/book-service:v1
 docker push nadirbasalamah/book-service:v1
 
 # rent
+docker build -t rent-service:v1 -f rent.dockerfile .
+docker tag rent-service:v1 nadirbasalamah/rent-service:v1
+docker push nadirbasalamah/rent-service:v1
 
 # logging
 

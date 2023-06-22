@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rent-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rent
+  template:
+    metadata:
+      labels:
+        app: rent
+    spec:
+      containers:
+        - name: rent
+          image: nadirbasalamah/rent-service:v1
+          ports:
+            - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rent-service
+spec:
+  selector:
+    app: rent
+  ports:
+    - protocol: TCP
+      port: 8082
