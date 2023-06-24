@@ -4,6 +4,7 @@ import (
 	authcontroller "library-service/internal/controller/auth/http"
 	bookcontroller "library-service/internal/controller/book/http"
 	rentcontroller "library-service/internal/controller/rent/http"
+	"log"
 	"pkg-service/discovery"
 
 	authgateway "library-service/internal/gateway/auth/grpc"
@@ -12,8 +13,10 @@ import (
 	"library-service/internal/service/library"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"github.com/labstack/echo-contrib/echoprometheus"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"pkg-service/auth"
 )
@@ -34,6 +37,24 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry, producer *kafka.Prod
 	authService := library.NewAuthService(*authGateway)
 	authController := authcontroller.New(authService)
 
+	// setup prometheus
+	customCounter := prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "custom_requests_total",
+			Help: "How many HTTP requests processed, partitioned by path and HTTP method.",
+		},
+		[]string{"path", "method"},
+	)
+	if err := prometheus.Register(customCounter); err != nil {
+		log.Fatal(err)
+	}
+
+	e.Use(echoprometheus.NewMiddlewareWithConfig(echoprometheus.MiddlewareConfig{
+		AfterNext: func(c echo.Context, err error) {
+			customCounter.WithLabelValues(c.Path(), c.Request().Method).Inc()
+		},
+	}))
+
 	endpoints := e.Group("/api/v1")
 
 	endpoints.POST("/register", authController.Register)
@@ -48,4 +69,6 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry, producer *kafka.Prod
 
 	protectedEndpoints.GET("/rents", rentController.GetAll)
 	protectedEndpoints.POST("/rents", rentController.Create)
+
+	e.GET("/metrics", echoprometheus.NewHandler())
 }
