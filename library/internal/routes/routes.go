@@ -49,11 +49,35 @@ func SetupRoutes(e *echo.Echo, registry discovery.Registry, producer *kafka.Prod
 		log.Fatal(err)
 	}
 
+	apiRequestDuration := prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "api_request_duration_seconds",
+			Help:    "Histogram for the request duration of the public API, partitioned by path and HTTP method.",
+			Buckets: prometheus.ExponentialBuckets(0.1, 1.5, 5),
+		},
+		[]string{"path", "method"},
+	)
+
+	if err := prometheus.Register(apiRequestDuration); err != nil {
+		log.Fatal(err)
+	}
+
 	e.Use(echoprometheus.NewMiddlewareWithConfig(echoprometheus.MiddlewareConfig{
 		AfterNext: func(c echo.Context, err error) {
 			customCounter.WithLabelValues(c.Path(), c.Request().Method).Inc()
 		},
 	}))
+
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			timer := prometheus.NewTimer(prometheus.ObserverFunc(func(v float64) {
+				apiRequestDuration.WithLabelValues(c.Path(), c.Request().Method).Observe(v)
+			}))
+			defer timer.ObserveDuration()
+
+			return next(c)
+		}
+	})
 
 	endpoints := e.Group("/api/v1")
 

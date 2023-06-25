@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: library
-          image: nadirbasalamah/library-service:v4
+          image: nadirbasalamah/library-service:v8
           env:
             - name: AUTH_DB_USERNAME
               value: "root"

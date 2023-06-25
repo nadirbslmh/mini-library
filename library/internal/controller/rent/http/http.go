@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	"library-service/internal/service/library"
 	"library-service/pkg/constant"
 	"net/http"
@@ -35,8 +34,6 @@ func (h *Controller) GetAll(c echo.Context) error {
 	ctxKey := constant.USER_ID_KEY
 
 	ctx := context.WithValue(c.Request().Context(), ctxKey, userId)
-
-	fmt.Println("new context: ", ctx.Value(ctxKey))
 
 	rents, err := h.service.GetAllRents(ctx)
 
